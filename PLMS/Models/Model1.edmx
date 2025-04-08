@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TrainingProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Applicant">
+          <Key>
+            <PropertyRef Name="registrationID" />
+          </Key>
+          <Property Name="registrationID" Type="int" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="phoneNum" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LoanApplication">
+          <Key>
+            <PropertyRef Name="applicationID" />
+          </Key>
+          <Property Name="applicationID" Type="int" Nullable="false" />
+          <Property Name="fullName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="adharNum" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="panNum" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="dob" Type="date" Nullable="false" />
+          <Property Name="monthlyIncome" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="companyName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="photo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="registrationID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LoanStatus">
+          <Key>
+            <PropertyRef Name="applicationID" />
+          </Key>
+          <Property Name="applicationID" Type="int" Nullable="false" />
+          <Property Name="registrationID" Type="int" Nullable="false" />
+          <Property Name="loanStatus" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Officer">
+          <Key>
+            <PropertyRef Name="officerID" />
+          </Key>
+          <Property Name="officerID" Type="int" Nullable="false" />
+          <Property Name="userID" Type="int" Nullable="false" />
+          <Property Name="applicationID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="userpass" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="fullName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="phoneNum" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="role" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_LoanApplication_Applicant">
+          <End Role="Applicant" Type="Self.Applicant" Multiplicity="1" />
+          <End Role="LoanApplication" Type="Self.LoanApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applicant">
+              <PropertyRef Name="registrationID" />
+            </Principal>
+            <Dependent Role="LoanApplication">
+              <PropertyRef Name="registrationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanStatus_Applicant">
+          <End Role="Applicant" Type="Self.Applicant" Multiplicity="1" />
+          <End Role="LoanStatus" Type="Self.LoanStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applicant">
+              <PropertyRef Name="registrationID" />
+            </Principal>
+            <Dependent Role="LoanStatus">
+              <PropertyRef Name="registrationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanStatus_LoanApplication">
+          <End Role="LoanApplication" Type="Self.LoanApplication" Multiplicity="1" />
+          <End Role="LoanStatus" Type="Self.LoanStatus" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="LoanApplication">
+              <PropertyRef Name="applicationID" />
+            </Principal>
+            <Dependent Role="LoanStatus">
+              <PropertyRef Name="applicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Officer_LoanApplication">
+          <End Role="LoanApplication" Type="Self.LoanApplication" Multiplicity="1" />
+          <End Role="Officer" Type="Self.Officer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoanApplication">
+              <PropertyRef Name="applicationID" />
+            </Principal>
+            <Dependent Role="Officer">
+              <PropertyRef Name="applicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Officer_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="1" />
+          <End Role="Officer" Type="Self.Officer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Officer">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TrainingProjectModelStoreContainer">
+          <EntitySet Name="Applicant" EntityType="Self.Applicant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoanApplication" EntityType="Self.LoanApplication" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoanStatus" EntityType="Self.LoanStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Officer" EntityType="Self.Officer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER" EntityType="Self.USER" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_LoanApplication_Applicant" Association="Self.FK_LoanApplication_Applicant">
+            <End Role="Applicant" EntitySet="Applicant" />
+            <End Role="LoanApplication" EntitySet="LoanApplication" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanStatus_Applicant" Association="Self.FK_LoanStatus_Applicant">
+            <End Role="Applicant" EntitySet="Applicant" />
+            <End Role="LoanStatus" EntitySet="LoanStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanStatus_LoanApplication" Association="Self.FK_LoanStatus_LoanApplication">
+            <End Role="LoanApplication" EntitySet="LoanApplication" />
+            <End Role="LoanStatus" EntitySet="LoanStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Officer_LoanApplication" Association="Self.FK_Officer_LoanApplication">
+            <End Role="LoanApplication" EntitySet="LoanApplication" />
+            <End Role="Officer" EntitySet="Officer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Officer_USER" Association="Self.FK_Officer_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="Officer" EntitySet="Officer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TrainingProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Applicant">
+          <Key>
+            <PropertyRef Name="registrationID" />
+          </Key>
+          <Property Name="registrationID" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phoneNum" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="LoanApplications" Relationship="Self.FK_LoanApplication_Applicant" FromRole="Applicant" ToRole="LoanApplication" />
+          <NavigationProperty Name="LoanStatus" Relationship="Self.FK_LoanStatus_Applicant" FromRole="Applicant" ToRole="LoanStatus" />
+        </EntityType>
+        <EntityType Name="LoanApplication">
+          <Key>
+            <PropertyRef Name="applicationID" />
+          </Key>
+          <Property Name="applicationID" Type="Int32" Nullable="false" />
+          <Property Name="fullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="adharNum" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="panNum" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dob" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="monthlyIncome" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="companyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="photo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="registrationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Applicant" Relationship="Self.FK_LoanApplication_Applicant" FromRole="LoanApplication" ToRole="Applicant" />
+          <NavigationProperty Name="LoanStatu" Relationship="Self.FK_LoanStatus_LoanApplication" FromRole="LoanApplication" ToRole="LoanStatus" />
+          <NavigationProperty Name="Officers" Relationship="Self.FK_Officer_LoanApplication" FromRole="LoanApplication" ToRole="Officer" />
+        </EntityType>
+        <EntityType Name="LoanStatu">
+          <Key>
+            <PropertyRef Name="applicationID" />
+          </Key>
+          <Property Name="applicationID" Type="Int32" Nullable="false" />
+          <Property Name="registrationID" Type="Int32" Nullable="false" />
+          <Property Name="loanStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Applicant" Relationship="Self.FK_LoanStatus_Applicant" FromRole="LoanStatus" ToRole="Applicant" />
+          <NavigationProperty Name="LoanApplication" Relationship="Self.FK_LoanStatus_LoanApplication" FromRole="LoanStatus" ToRole="LoanApplication" />
+        </EntityType>
+        <EntityType Name="Officer">
+          <Key>
+            <PropertyRef Name="officerID" />
+          </Key>
+          <Property Name="officerID" Type="Int32" Nullable="false" />
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="applicationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="LoanApplication" Relationship="Self.FK_Officer_LoanApplication" FromRole="Officer" ToRole="LoanApplication" />
+          <NavigationProperty Name="USER" Relationship="Self.FK_Officer_USER" FromRole="Officer" ToRole="USER" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userpass" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phoneNum" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="role" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Officers" Relationship="Self.FK_Officer_USER" FromRole="USER" ToRole="Officer" />
+        </EntityType>
+        <Association Name="FK_LoanApplication_Applicant">
+          <End Role="Applicant" Type="Self.Applicant" Multiplicity="1" />
+          <End Role="LoanApplication" Type="Self.LoanApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applicant">
+              <PropertyRef Name="registrationID" />
+            </Principal>
+            <Dependent Role="LoanApplication">
+              <PropertyRef Name="registrationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanStatus_Applicant">
+          <End Role="Applicant" Type="Self.Applicant" Multiplicity="1" />
+          <End Role="LoanStatus" Type="Self.LoanStatu" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applicant">
+              <PropertyRef Name="registrationID" />
+            </Principal>
+            <Dependent Role="LoanStatus">
+              <PropertyRef Name="registrationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoanStatus_LoanApplication">
+          <End Role="LoanApplication" Type="Self.LoanApplication" Multiplicity="1" />
+          <End Role="LoanStatus" Type="Self.LoanStatu" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="LoanApplication">
+              <PropertyRef Name="applicationID" />
+            </Principal>
+            <Dependent Role="LoanStatus">
+              <PropertyRef Name="applicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Officer_LoanApplication">
+          <End Role="LoanApplication" Type="Self.LoanApplication" Multiplicity="1" />
+          <End Role="Officer" Type="Self.Officer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LoanApplication">
+              <PropertyRef Name="applicationID" />
+            </Principal>
+            <Dependent Role="Officer">
+              <PropertyRef Name="applicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Officer_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="1" />
+          <End Role="Officer" Type="Self.Officer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="Officer">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TrainingProjectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Applicants" EntityType="Self.Applicant" />
+          <EntitySet Name="LoanApplications" EntityType="Self.LoanApplication" />
+          <EntitySet Name="LoanStatus" EntityType="Self.LoanStatu" />
+          <EntitySet Name="Officers" EntityType="Self.Officer" />
+          <EntitySet Name="USERs" EntityType="Self.USER" />
+          <AssociationSet Name="FK_LoanApplication_Applicant" Association="Self.FK_LoanApplication_Applicant">
+            <End Role="Applicant" EntitySet="Applicants" />
+            <End Role="LoanApplication" EntitySet="LoanApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanStatus_Applicant" Association="Self.FK_LoanStatus_Applicant">
+            <End Role="Applicant" EntitySet="Applicants" />
+            <End Role="LoanStatus" EntitySet="LoanStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoanStatus_LoanApplication" Association="Self.FK_LoanStatus_LoanApplication">
+            <End Role="LoanApplication" EntitySet="LoanApplications" />
+            <End Role="LoanStatus" EntitySet="LoanStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Officer_LoanApplication" Association="Self.FK_Officer_LoanApplication">
+            <End Role="LoanApplication" EntitySet="LoanApplications" />
+            <End Role="Officer" EntitySet="Officers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Officer_USER" Association="Self.FK_Officer_USER">
+            <End Role="USER" EntitySet="USERs" />
+            <End Role="Officer" EntitySet="Officers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TrainingProjectModelStoreContainer" CdmEntityContainer="TrainingProjectEntities">
+          <EntitySetMapping Name="Applicants">
+            <EntityTypeMapping TypeName="TrainingProjectModel.Applicant">
+              <MappingFragment StoreEntitySet="Applicant">
+                <ScalarProperty Name="registrationID" ColumnName="registrationID" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="phoneNum" ColumnName="phoneNum" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoanApplications">
+            <EntityTypeMapping TypeName="TrainingProjectModel.LoanApplication">
+              <MappingFragment StoreEntitySet="LoanApplication">
+                <ScalarProperty Name="applicationID" ColumnName="applicationID" />
+                <ScalarProperty Name="fullName" ColumnName="fullName" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="adharNum" ColumnName="adharNum" />
+                <ScalarProperty Name="panNum" ColumnName="panNum" />
+                <ScalarProperty Name="dob" ColumnName="dob" />
+                <ScalarProperty Name="monthlyIncome" ColumnName="monthlyIncome" />
+                <ScalarProperty Name="companyName" ColumnName="companyName" />
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="registrationID" ColumnName="registrationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoanStatus">
+            <EntityTypeMapping TypeName="TrainingProjectModel.LoanStatu">
+              <MappingFragment StoreEntitySet="LoanStatus">
+                <ScalarProperty Name="applicationID" ColumnName="applicationID" />
+                <ScalarProperty Name="registrationID" ColumnName="registrationID" />
+                <ScalarProperty Name="loanStatus" ColumnName="loanStatus" />
+                <ScalarProperty Name="remark" ColumnName="remark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Officers">
+            <EntityTypeMapping TypeName="TrainingProjectModel.Officer">
+              <MappingFragment StoreEntitySet="Officer">
+                <ScalarProperty Name="officerID" ColumnName="officerID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="applicationID" ColumnName="applicationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERs">
+            <EntityTypeMapping TypeName="TrainingProjectModel.USER">
+              <MappingFragment StoreEntitySet="USER">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="userpass" ColumnName="userpass" />
+                <ScalarProperty Name="fullName" ColumnName="fullName" />
+                <ScalarProperty Name="phoneNum" ColumnName="phoneNum" />
+                <ScalarProperty Name="role" ColumnName="role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,50 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SignUP</title>
+</head>
+<body>
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="signupName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="signupName" pattern="[A-Za-z]*" required>
+                        </div>
+                        <div>
+                            <label for="signupContact" class="form-label">Contact Number</label>
+                            <input type="text" class="form-control" id="signupContact" pattern="[0-9]*" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signupEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="signupEmail" pattern="[A-Za-z0-9.&#64;]*" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signupPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="signupPassword" pattern="[A-Za-z0-9.&#64;$!#]*" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signupConfPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="signupConfPassword" pattern="[A-Za-z0-9.&#64;$!#]*" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
