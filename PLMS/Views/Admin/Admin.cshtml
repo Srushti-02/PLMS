@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-10">
+                <!-- Admin Dashboard Card -->
+                <div class="card">
+                    <div class="card-header text-center bg-primary text-white">
+                        <h3>Welcome Admin</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Admin Options -->
+                        <div class="list-group">
+                            <!-- Option 1: Add New User -->
+                            <a href="@Url.Action("AddNew", "Admin")" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                Add New User
+                                <span class="badge bg-success">+</span>
+                            </a>
+
+                            <!-- Option 2: Edit Access -->
+                            <a href="@Url.Action("EditAccess", "Admin")" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                Edit User Access
+                                <span class="badge bg-warning">Edit</span>
+                            </a>
+
+                            <!-- Option 3: View Applicants -->
+                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                View Applicants
+                                <span class="badge bg-info">View</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <small>Admin Dashboard - Manage your platform</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (Optional, for form validation, modals, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
