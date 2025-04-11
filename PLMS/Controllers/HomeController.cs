@@ -8,7 +8,7 @@ namespace PLMS.Controllers
 {
     public class HomeController : Controller
     {
-        Models.TrainingProjectEntities _db  = new Models.TrainingProjectEntities();
+        Models.DbModel.TrainingProjectEntities1 _db = new Models.DbModel.TrainingProjectEntities1();
         // GET: Home
         public ActionResult Index()
         {
@@ -26,19 +26,18 @@ namespace PLMS.Controllers
             if (ModelState.IsValid)
             {
                 var user = _db.USERs.FirstOrDefault(u => u.username == model.username && u.userpass == model.password);
-
                 if (user != null)
                 {
                     Session["username"] = user.username;
                     if (user.role == "Admin") return RedirectToAction("Admin", "Admin");
+                    else if (user.role == "LO") return RedirectToAction("LODashboard", "LoanOfficer");
+                    else if (user.role == "LI") return RedirectToAction("LIDashboard", "LoanOfficer");
                     else return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Wrong username or password");
                 }
 
             }
+
+            ModelState.AddModelError("", "User doesn't exists");
             return View(model);
         }
         public ActionResult SignUP()

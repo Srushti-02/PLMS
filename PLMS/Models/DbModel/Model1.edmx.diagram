@@ -4,12 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0b07e4c99b7142fb948a077399b5e7ba" Name="Diagram1" ZoomLevel="77">
+      <Diagram DiagramId="4d8dd990ff224ed9a7c1e569648276b4" Name="Diagram1" ZoomLevel="47">
         <EntityTypeShape EntityType="TrainingProjectModel.Applicant" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="TrainingProjectModel.LoanApplication" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="TrainingProjectModel.LoanStatu" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="TrainingProjectModel.Officer" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TrainingProjectModel.USER" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainingProjectModel.USER" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
         <AssociationConnector Association="TrainingProjectModel.FK_LoanApplication_Applicant" ManuallyRouted="false" />
         <AssociationConnector Association="TrainingProjectModel.FK_LoanStatus_Applicant" ManuallyRouted="false" />
         <AssociationConnector Association="TrainingProjectModel.FK_LoanStatus_LoanApplication" ManuallyRouted="false" />

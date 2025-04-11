@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PLMS.Models
+namespace PLMS.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
@@ -26,6 +26,7 @@ namespace PLMS.Models
         public string fullName { get; set; }
         public string phoneNum { get; set; }
         public string role { get; set; }
+        public string access { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Officer> Officers { get; set; }

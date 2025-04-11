@@ -7,28 +7,34 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PLMS.Models
+namespace PLMS.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Applicant
+    public partial class LoanApplication
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Applicant()
+        public LoanApplication()
         {
-            this.LoanApplications = new HashSet<LoanApplication>();
-            this.LoanStatus = new HashSet<LoanStatu>();
+            this.Officers = new HashSet<Officer>();
         }
     
+        public int applicationID { get; set; }
+        public string fullName { get; set; }
+        public string email { get; set; }
+        public string address { get; set; }
+        public string adharNum { get; set; }
+        public string panNum { get; set; }
+        public System.DateTime dob { get; set; }
+        public decimal monthlyIncome { get; set; }
+        public string companyName { get; set; }
+        public string photo { get; set; }
         public int registrationID { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public string phoneNum { get; set; }
     
+        public virtual Applicant Applicant { get; set; }
+        public virtual LoanStatu LoanStatu { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LoanApplication> LoanApplications { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LoanStatu> LoanStatus { get; set; }
+        public virtual ICollection<Officer> Officers { get; set; }
     }
 }

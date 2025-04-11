@@ -7,19 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PLMS.Models
+namespace PLMS.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class LoanStatu
+    public partial class Officer
     {
+        public int officerID { get; set; }
+        public int userID { get; set; }
         public int applicationID { get; set; }
-        public int registrationID { get; set; }
-        public string loanStatus { get; set; }
-        public string remark { get; set; }
     
-        public virtual Applicant Applicant { get; set; }
         public virtual LoanApplication LoanApplication { get; set; }
+        public virtual USER USER { get; set; }
     }
 }

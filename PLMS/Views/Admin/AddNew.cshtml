@@ -1,18 +1,65 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    ViewBag.Title = "Add New Employee";
 }
 
-<!DOCTYPE html>
+@model PLMS.Models.ModelViews.AdminViewModel
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>AddNew</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
-    <div> 
-        Admin Add
+    <div class="container mt-5">
+        <h2 class="text-center">Add New Employee</h2>
+
+        @using (Html.BeginForm("AddNew", "Admin", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                @Html.LabelFor(m => m.username, "Username (Email)")
+                @Html.TextBoxFor(m => m.username, new { @class = "form-control", type = "email", required = "required" })
+                @Html.ValidationMessageFor(m => m.username, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.userpass, "Temporary Password")
+                @Html.PasswordFor(m => m.userpass, new { @class = "form-control", required = "required" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.fullName, "Full Name")
+                @Html.TextBoxFor(m => m.fullName, new { @class = "form-control", required = "required" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.phoneNum, "Mobile Number")
+                @Html.TextBoxFor(m => m.phoneNum, new { @class = "form-control", required = "required" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.access, "Status")
+                @Html.DropDownListFor(m => m.access, new SelectList(new[] {
+                    new { Value = "Enabled", Text = "Activate" },
+                    new { Value = "Disabled", Text = "Deactivate" }
+                }, "Value", "Text"), "Select Status", new { @class = "form-control", required = "required" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.role, "Role")
+                @Html.DropDownListFor(m => m.role, new SelectList(new[] {
+                    new { Value = "LO", Text = "Loan Officer" },
+                    new { Value = "LI", Text = "Loan Inspector" }
+                }, "Value", "Text"), "Select Role", new { @class = "form-control", required = "required" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Employee</button>
+        }
+
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

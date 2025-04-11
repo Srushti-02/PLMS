@@ -7,16 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PLMS.Models
+namespace PLMS.Models.DbModel
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class TrainingProjectEntities : DbContext
+    public partial class TrainingProjectEntities1 : DbContext
     {
-        public TrainingProjectEntities()
-            : base("name=TrainingProjectEntities")
+        public TrainingProjectEntities1()
+            : base("name=TrainingProjectEntities1")
         {
         }
     

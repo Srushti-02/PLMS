@@ -51,12 +51,13 @@
           <Key>
             <PropertyRef Name="userID" />
           </Key>
-          <Property Name="userID" Type="int" Nullable="false" />
-          <Property Name="username" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="userpass" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="userpass" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="fullName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="phoneNum" Type="varchar" MaxLength="15" Nullable="false" />
-          <Property Name="role" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="role" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="access" Type="varchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <Association Name="FK_LoanApplication_Applicant">
           <End Role="Applicant" Type="Self.Applicant" Multiplicity="1" />
@@ -205,12 +206,13 @@
           <Key>
             <PropertyRef Name="userID" />
           </Key>
-          <Property Name="userID" Type="Int32" Nullable="false" />
-          <Property Name="username" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="userpass" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="userpass" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="fullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="phoneNum" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="role" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="access" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Officers" Relationship="Self.FK_Officer_USER" FromRole="USER" ToRole="Officer" />
         </EntityType>
         <Association Name="FK_LoanApplication_Applicant">
@@ -273,7 +275,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="TrainingProjectEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="TrainingProjectEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Applicants" EntityType="Self.Applicant" />
           <EntitySet Name="LoanApplications" EntityType="Self.LoanApplication" />
           <EntitySet Name="LoanStatus" EntityType="Self.LoanStatu" />
@@ -305,7 +307,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="TrainingProjectModelStoreContainer" CdmEntityContainer="TrainingProjectEntities">
+        <EntityContainerMapping StorageEntityContainer="TrainingProjectModelStoreContainer" CdmEntityContainer="TrainingProjectEntities1">
           <EntitySetMapping Name="Applicants">
             <EntityTypeMapping TypeName="TrainingProjectModel.Applicant">
               <MappingFragment StoreEntitySet="Applicant">
@@ -361,6 +363,7 @@
                 <ScalarProperty Name="fullName" ColumnName="fullName" />
                 <ScalarProperty Name="phoneNum" ColumnName="phoneNum" />
                 <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="access" ColumnName="access" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
