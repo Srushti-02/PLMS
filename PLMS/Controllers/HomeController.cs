@@ -26,7 +26,7 @@ namespace PLMS.Controllers
             if (ModelState.IsValid)
             {
                 var user = _db.USERs.FirstOrDefault(u => u.username == model.username && u.userpass == model.password);
-                if (user != null)
+                if (user != null && user.access!="Disabled")
                 {
                     Session["username"] = user.username;
                     if (user.role == "Admin") return RedirectToAction("Admin", "Admin");
@@ -34,7 +34,11 @@ namespace PLMS.Controllers
                     else if (user.role == "LI") return RedirectToAction("LIDashboard", "LoanOfficer");
                     else return RedirectToAction("Index", "Home");
                 }
-
+                else if(user != null && user.access == "Disabled")
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                return RedirectToAction("Index", "Home");
             }
 
             ModelState.AddModelError("", "User doesn't exists");
