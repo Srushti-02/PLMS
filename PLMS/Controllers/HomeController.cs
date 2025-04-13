@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PLMS.Models.DbModel;
 using PLMS.Models.ModelViews;
 namespace PLMS.Controllers
 {
@@ -47,6 +50,58 @@ namespace PLMS.Controllers
         public ActionResult SignUP()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SignUp(SignupViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var applicant = _db.Applicants.FirstOrDefault(u => u.username == model.Email);
+                if(applicant != null)
+                {
+                    ModelState.AddModelError("Email", "User with this email already exists.");
+                    return View(model);
+                }
+                var newApplicant = new Applicant
+                {
+                    username = model.Email,
+                    password = model.Password,
+                    phoneNum = model.ContactNumber
+                };
+                Session["Name"] = model.FullName;
+                Session["Email"] = model.Email;
+                try
+                {
+                    _db.Applicants.Add(newApplicant);
+                    _db.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    foreach (var validationErrors in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            System.Diagnostics.Debug.WriteLine("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                            ModelState.AddModelError(validationError.PropertyName, validationError.ErrorMessage);
+                        }
+                    }
+                    return View(model);
+                }
+
+                TempData["SuccessMessage"] = "Signup successful!";
+                return RedirectToAction("Login", "Home"); 
+            }
+            TempData["FailureMessage"] = "Cannot do signup";
+            return View(model);
+        }
+
+        public ActionResult LogOut()
+        {
+            Session.Clear();
+            TempData["SuccessMessage"] = "You have been logged out.";
+            return RedirectToAction("Login", "Home");
         }
     }
 }
