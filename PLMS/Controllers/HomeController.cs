@@ -11,7 +11,7 @@ namespace PLMS.Controllers
 {
     public class HomeController : Controller
     {
-        Models.DbModel.TrainingProjectEntities1 _db = new Models.DbModel.TrainingProjectEntities1();
+        G1IBMDbEntities _db = new G1IBMDbEntities();
         // GET: Home
         public ActionResult Index()
         {
@@ -66,32 +66,24 @@ namespace PLMS.Controllers
                 }
                 var newApplicant = new Applicant
                 {
+                    fullName = model.FullName,
                     username = model.Email,
                     password = model.Password,
                     phoneNum = model.ContactNumber
                 };
-                Session["Name"] = model.FullName;
-                Session["Email"] = model.Email;
                 try
                 {
                     _db.Applicants.Add(newApplicant);
                     _db.SaveChanges();
                 }
-                catch (DbEntityValidationException ex)
+                catch (Exception ex)
                 {
-                    foreach (var validationErrors in ex.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            System.Diagnostics.Debug.WriteLine("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                            ModelState.AddModelError(validationError.PropertyName, validationError.ErrorMessage);
-                        }
-                    }
+                    ModelState.AddModelError("", "Error: " + ex.Message);
                     return View(model);
                 }
 
                 TempData["SuccessMessage"] = "Signup successful!";
-                return RedirectToAction("Login", "Home"); 
+                return RedirectToAction("Login", "Applicant"); 
             }
             TempData["FailureMessage"] = "Cannot do signup";
             return View(model);

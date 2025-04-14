@@ -21,7 +21,5 @@ namespace PLMS.Models.ModelViews
         public decimal MonthlyIncome { get; set; }
         public string CompanyName { get; set; }
 
-        // For image upload
-        public HttpPostedFileBase Photo { get; set; }
     }
 }

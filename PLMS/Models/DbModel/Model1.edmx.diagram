@@ -4,17 +4,17 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4d8dd990ff224ed9a7c1e569648276b4" Name="Diagram1" ZoomLevel="47">
-        <EntityTypeShape EntityType="TrainingProjectModel.Applicant" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TrainingProjectModel.LoanApplication" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="TrainingProjectModel.LoanStatu" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TrainingProjectModel.Officer" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TrainingProjectModel.USER" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
-        <AssociationConnector Association="TrainingProjectModel.FK_LoanApplication_Applicant" ManuallyRouted="false" />
-        <AssociationConnector Association="TrainingProjectModel.FK_LoanStatus_Applicant" ManuallyRouted="false" />
-        <AssociationConnector Association="TrainingProjectModel.FK_LoanStatus_LoanApplication" ManuallyRouted="false" />
-        <AssociationConnector Association="TrainingProjectModel.FK_Officer_LoanApplication" ManuallyRouted="false" />
-        <AssociationConnector Association="TrainingProjectModel.FK_Officer_USER" ManuallyRouted="false" />
+      <Diagram DiagramId="560b6d83b8ae49f18b31dac76470c264" Name="Diagram1">
+        <EntityTypeShape EntityType="G1IBMDbModel.Applicant" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="G1IBMDbModel.LoanApplication" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="G1IBMDbModel.LoanStatu" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="G1IBMDbModel.Officer" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="G1IBMDbModel.USER" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <AssociationConnector Association="G1IBMDbModel.FK_LoanApplication_Applicant" ManuallyRouted="false" />
+        <AssociationConnector Association="G1IBMDbModel.FK_LoanStatus_Applicant" ManuallyRouted="false" />
+        <AssociationConnector Association="G1IBMDbModel.FK_LoanStatus_LoanApplication" ManuallyRouted="false" />
+        <AssociationConnector Association="G1IBMDbModel.FK_Officer_LoanApplication" ManuallyRouted="false" />
+        <AssociationConnector Association="G1IBMDbModel.FK_Officer_USER" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -14,7 +14,7 @@ namespace PLMS.Controllers
 {
     public class AdminController : Controller
     {
-        Models.DbModel.TrainingProjectEntities1 _db = new Models.DbModel.TrainingProjectEntities1();
+        G1IBMDbEntities _db = new G1IBMDbEntities();
         // GET: User
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

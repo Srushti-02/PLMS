@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,13 +12,33 @@ namespace PLMS.Controllers
     
     public class ApplicantController : Controller
     {
-        TrainingProjectEntities1 _db = new TrainingProjectEntities1();
+        G1IBMDbEntities _db = new G1IBMDbEntities();
         // GET: Applicant
         public ActionResult ApplicantDashboard()
         {
             return View();
         }
+        //public ActionResult ApplicantDashboard()
+        //{
+        //    var email = Session["Email"]?.ToString();
 
+        //    if (string.IsNullOrEmpty(email))
+        //    {
+        //        return RedirectToAction("Login", "Home");
+        //    }
+
+        //    var applicant = _db.Applicants.FirstOrDefault(a => a.username == email);
+        //    if (applicant == null)
+        //    {
+        //        return RedirectToAction("Login", "Home");
+        //    }
+
+        //    var applications = _db.LoanApplications
+        //                          .Where(app => app.registrationID == applicant.registrationID)
+        //                          .ToList();
+
+        //    return View(applications);
+        //}
         // Apply 
         public ActionResult Apply()
         {
@@ -27,11 +48,13 @@ namespace PLMS.Controllers
         [HttpPost]
         public ActionResult Apply(ApplicantViewModel model)
         {
+            var registrationId = _db.Applicants.FirstOrDefault(u => u.username == model.Email).registrationID;
             if (ModelState.IsValid)
             {
+
                 LoanApplication application = new LoanApplication
                 {
-                    fullName = model.FullName,
+
                     email = model.Email,
                     address = model.Address,
                     adharNum = model.AadhaarNumber,
@@ -39,7 +62,7 @@ namespace PLMS.Controllers
                     dob = model.DOB,
                     monthlyIncome = model.MonthlyIncome,
                     companyName = model.CompanyName,
-                    
+                    registrationID = registrationId
                 };
 
                 _db.LoanApplications.Add(application);
@@ -87,6 +110,32 @@ namespace PLMS.Controllers
                 // Change password logic
                 return RedirectToAction("Index");
             }
+            return View(model);
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginModelView model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _db.Applicants.FirstOrDefault(u => u.username == model.username && u.password == model.password);
+                if (user != null )
+                {
+                    Session["username"] = user.username;
+                    
+                    return RedirectToAction("ApplicantDashboard", "Applicant");
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError("", "User doesn't exists");
             return View(model);
         }
     }

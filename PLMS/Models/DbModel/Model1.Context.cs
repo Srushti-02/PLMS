@@ -13,10 +13,10 @@ namespace PLMS.Models.DbModel
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class TrainingProjectEntities1 : DbContext
+    public partial class G1IBMDbEntities : DbContext
     {
-        public TrainingProjectEntities1()
-            : base("name=TrainingProjectEntities1")
+        public G1IBMDbEntities()
+            : base("name=G1IBMDbEntities")
         {
         }
     

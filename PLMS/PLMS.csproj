@@ -173,8 +173,9 @@
     <Content Include="Views\Admin\ViewApplicants.cshtml" />
     <Content Include="Views\Admin\EditAccess.cshtml" />
     <Content Include="Views\LoanOfficer\LODashboard.cshtml" />
-    <Content Include="Views\Applicant\ApplicantDashboard.cshtml" />
     <Content Include="Views\Applicant\Apply.cshtml" />
+    <Content Include="Views\Applicant\Login.cshtml" />
+    <Content Include="Views\Applicant\ApplicantDashboard.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

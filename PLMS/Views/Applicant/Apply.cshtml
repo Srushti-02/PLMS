@@ -15,7 +15,7 @@
                     <h4 class="mb-0">📄 Application Form</h4>
                 </div>
                 <div class="card-body">
-                    @using (Html.BeginForm("Create", "Application", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("Apply", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         @Html.AntiForgeryToken()
 
@@ -62,10 +62,10 @@
                             @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control", placeholder = "Enter Company Name" })
                         </div>
 
-                        <div class="mb-4">
+                        @*<div class="mb-4">
                             @Html.Label("Photo", htmlAttributes: new { @class = "form-label" })
                             <input type="file" name="Photo" class="form-control" />
-                        </div>
+                        </div>*@
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-success btn-lg">

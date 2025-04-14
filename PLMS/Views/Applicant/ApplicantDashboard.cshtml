@@ -1,96 +1,18 @@
-﻿@model IEnumerable<PLMS.Models.ModelViews.ApplicantViewModel>
+﻿
 @{
-    ViewBag.Title = "Applicant Dashboard";
+    Layout = null;
 }
 
-<!-- Bootstrap CDN (if not using layout) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<!DOCTYPE html>
 
-<div class="container mt-5">
-    <!-- Header Section -->
-    <div class="row mb-4 align-items-center">
-        <div class="col-md-8">
-            <h2 class="fw-bold">👋 Welcome, <span class="text-primary">@Session["Name"]</span></h2>
-            <p class="text-muted">Here’s your personalized dashboard. View and manage your applications below.</p>
-        </div>
-        <div class="col-md-4 text-end">
-            <div class="btn-group">
-                @Html.ActionLink("🔐 Change Password", "ChangePassword", "Applicant", null, new { @class = "btn btn-outline-warning" })
-                @Html.ActionLink("🚪 Logout", "Logout", "Home", null, new { @class = "btn btn-outline-danger" })
-            </div>
-        </div>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ApplicantDashboard</title>
+</head>
+<body>
+    <div> 
+        hi
     </div>
-
-    <!-- Apply Button Row -->
-    <div class="row mb-3">
-        <div class="col text-end">
-            @Html.ActionLink("➕ Apply for New Application", "Apply", "Applicant", null, new { @class = "btn btn-success btn-lg shadow-sm" })
-        </div>
-    </div>
-
-    <!-- Applications Card -->
-    <div class="card shadow border-0">
-        <div class="card-header bg-gradient bg-primary text-white">
-            <h5 class="mb-0"><i class="fas fa-folder-open me-2"></i>Your Submitted Applications</h5>
-        </div>
-        <div class="card-body">
-            @if (Model == null || !Model.Any())
-            {
-                <div class="alert alert-info text-center">
-                    <i class="fas fa-info-circle me-2"></i><strong>No applications found.</strong> You haven’t submitted any applications yet.
-                </div>
-            }
-            else
-            {
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>📄 Application ID</th>
-                                <th>📅 Submitted On</th>
-                                <th>📌 Status</th>
-                                <th>⚙️ Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var application in Model)
-                            {
-                                <tr>
-                                    <td class="fw-semibold">@application.ApplicationId</td>
-                                    <td>@application.SubmissionDate.ToString("MMM dd, yyyy")</td>
-                                    <td>
-                                        <span class="badge rounded-pill bg-@GetStatusColor(application.Status)">
-                                            @application.Status
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group">
-                                            @Html.ActionLink("✏️ Edit", "Edit", "Applicant", new { id = application.ApplicationId }, new { @class = "btn btn-sm btn-outline-primary" })
-                                            @Html.ActionLink("🔍 View", "Details", "Application", new { id = application.ApplicationId }, new { @class = "btn btn-sm btn-outline-secondary" })
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-
-<!-- Custom Status Badge Helper -->
-@functions {
-    private string GetStatusColor(string status)
-    {
-        switch (status?.ToLowerInvariant())
-        {
-            case "submitted": return "info";
-            case "approved": return "success";
-            case "rejected": return "danger";
-            case "pending": return "warning";
-            default: return "secondary";
-        }
-    }
-}
+</body>
+</html>

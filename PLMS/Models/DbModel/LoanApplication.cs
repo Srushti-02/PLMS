@@ -21,7 +21,6 @@ namespace PLMS.Models.DbModel
         }
     
         public int applicationID { get; set; }
-        public string fullName { get; set; }
         public string email { get; set; }
         public string address { get; set; }
         public string adharNum { get; set; }
@@ -29,7 +28,6 @@ namespace PLMS.Models.DbModel
         public System.DateTime dob { get; set; }
         public decimal monthlyIncome { get; set; }
         public string companyName { get; set; }
-        public string photo { get; set; }
         public int registrationID { get; set; }
     
         public virtual Applicant Applicant { get; set; }

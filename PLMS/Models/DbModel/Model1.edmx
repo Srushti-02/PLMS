@@ -4,22 +4,22 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TrainingProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="G1IBMDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Applicant">
           <Key>
             <PropertyRef Name="registrationID" />
           </Key>
-          <Property Name="registrationID" Type="int" Nullable="false" />
-          <Property Name="username" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="password" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="registrationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fullName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="phoneNum" Type="varchar" MaxLength="15" Nullable="false" />
         </EntityType>
         <EntityType Name="LoanApplication">
           <Key>
             <PropertyRef Name="applicationID" />
           </Key>
-          <Property Name="applicationID" Type="int" Nullable="false" />
-          <Property Name="fullName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="applicationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="adharNum" Type="varchar" MaxLength="15" Nullable="false" />
@@ -27,23 +27,22 @@
           <Property Name="dob" Type="date" Nullable="false" />
           <Property Name="monthlyIncome" Type="decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="companyName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="photo" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="registrationID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LoanStatus">
           <Key>
             <PropertyRef Name="applicationID" />
           </Key>
-          <Property Name="applicationID" Type="int" Nullable="false" />
+          <Property Name="applicationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="registrationID" Type="int" Nullable="false" />
-          <Property Name="loanStatus" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="remark" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="loanStatus" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="remark" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Officer">
           <Key>
             <PropertyRef Name="officerID" />
           </Key>
-          <Property Name="officerID" Type="int" Nullable="false" />
+          <Property Name="officerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="userID" Type="int" Nullable="false" />
           <Property Name="applicationID" Type="int" Nullable="false" />
         </EntityType>
@@ -52,12 +51,12 @@
             <PropertyRef Name="userID" />
           </Key>
           <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="userpass" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="userpass" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="fullName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="phoneNum" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="phoneNum" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="role" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="access" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="access" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="FK_LoanApplication_Applicant">
           <End Role="Applicant" Type="Self.Applicant" Multiplicity="1" />
@@ -119,7 +118,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="TrainingProjectModelStoreContainer">
+        <EntityContainer Name="G1IBMDbModelStoreContainer">
           <EntitySet Name="Applicant" EntityType="Self.Applicant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoanApplication" EntityType="Self.LoanApplication" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoanStatus" EntityType="Self.LoanStatus" Schema="dbo" store:Type="Tables" />
@@ -146,28 +145,27 @@
             <End Role="Officer" EntitySet="Officer" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="TrainingProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="G1IBMDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Applicant">
           <Key>
             <PropertyRef Name="registrationID" />
           </Key>
           <Property Name="registrationID" Type="Int32" Nullable="false" />
-          <Property Name="username" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="phoneNum" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="LoanApplications" Relationship="Self.FK_LoanApplication_Applicant" FromRole="Applicant" ToRole="LoanApplication" />
           <NavigationProperty Name="LoanStatus" Relationship="Self.FK_LoanStatus_Applicant" FromRole="Applicant" ToRole="LoanStatus" />
+          <Property Name="fullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="LoanApplication">
           <Key>
             <PropertyRef Name="applicationID" />
           </Key>
           <Property Name="applicationID" Type="Int32" Nullable="false" />
-          <Property Name="fullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="adharNum" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
@@ -175,7 +173,6 @@
           <Property Name="dob" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="monthlyIncome" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="companyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="photo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="registrationID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Applicant" Relationship="Self.FK_LoanApplication_Applicant" FromRole="LoanApplication" ToRole="Applicant" />
           <NavigationProperty Name="LoanStatu" Relationship="Self.FK_LoanStatus_LoanApplication" FromRole="LoanApplication" ToRole="LoanStatus" />
@@ -187,8 +184,8 @@
           </Key>
           <Property Name="applicationID" Type="Int32" Nullable="false" />
           <Property Name="registrationID" Type="Int32" Nullable="false" />
-          <Property Name="loanStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="remark" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="loanStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="remark" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Applicant" Relationship="Self.FK_LoanStatus_Applicant" FromRole="LoanStatus" ToRole="Applicant" />
           <NavigationProperty Name="LoanApplication" Relationship="Self.FK_LoanStatus_LoanApplication" FromRole="LoanStatus" ToRole="LoanApplication" />
         </EntityType>
@@ -207,12 +204,12 @@
             <PropertyRef Name="userID" />
           </Key>
           <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="userpass" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userpass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="fullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="phoneNum" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phoneNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="access" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="access" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Officers" Relationship="Self.FK_Officer_USER" FromRole="USER" ToRole="Officer" />
         </EntityType>
         <Association Name="FK_LoanApplication_Applicant">
@@ -275,7 +272,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="TrainingProjectEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="G1IBMDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Applicants" EntityType="Self.Applicant" />
           <EntitySet Name="LoanApplications" EntityType="Self.LoanApplication" />
           <EntitySet Name="LoanStatus" EntityType="Self.LoanStatu" />
@@ -307,10 +304,11 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="TrainingProjectModelStoreContainer" CdmEntityContainer="TrainingProjectEntities1">
+        <EntityContainerMapping StorageEntityContainer="G1IBMDbModelStoreContainer" CdmEntityContainer="G1IBMDbEntities">
           <EntitySetMapping Name="Applicants">
-            <EntityTypeMapping TypeName="TrainingProjectModel.Applicant">
+            <EntityTypeMapping TypeName="G1IBMDbModel.Applicant">
               <MappingFragment StoreEntitySet="Applicant">
+                <ScalarProperty Name="fullName" ColumnName="fullName" />
                 <ScalarProperty Name="registrationID" ColumnName="registrationID" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />
@@ -319,10 +317,9 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LoanApplications">
-            <EntityTypeMapping TypeName="TrainingProjectModel.LoanApplication">
+            <EntityTypeMapping TypeName="G1IBMDbModel.LoanApplication">
               <MappingFragment StoreEntitySet="LoanApplication">
                 <ScalarProperty Name="applicationID" ColumnName="applicationID" />
-                <ScalarProperty Name="fullName" ColumnName="fullName" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="adharNum" ColumnName="adharNum" />
@@ -330,13 +327,12 @@
                 <ScalarProperty Name="dob" ColumnName="dob" />
                 <ScalarProperty Name="monthlyIncome" ColumnName="monthlyIncome" />
                 <ScalarProperty Name="companyName" ColumnName="companyName" />
-                <ScalarProperty Name="photo" ColumnName="photo" />
                 <ScalarProperty Name="registrationID" ColumnName="registrationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LoanStatus">
-            <EntityTypeMapping TypeName="TrainingProjectModel.LoanStatu">
+            <EntityTypeMapping TypeName="G1IBMDbModel.LoanStatu">
               <MappingFragment StoreEntitySet="LoanStatus">
                 <ScalarProperty Name="applicationID" ColumnName="applicationID" />
                 <ScalarProperty Name="registrationID" ColumnName="registrationID" />
@@ -346,7 +342,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Officers">
-            <EntityTypeMapping TypeName="TrainingProjectModel.Officer">
+            <EntityTypeMapping TypeName="G1IBMDbModel.Officer">
               <MappingFragment StoreEntitySet="Officer">
                 <ScalarProperty Name="officerID" ColumnName="officerID" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
@@ -355,7 +351,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="USERs">
-            <EntityTypeMapping TypeName="TrainingProjectModel.USER">
+            <EntityTypeMapping TypeName="G1IBMDbModel.USER">
               <MappingFragment StoreEntitySet="USER">
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="username" ColumnName="username" />
