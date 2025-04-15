@@ -15,7 +15,8 @@
                     <h4 class="mb-0">📄 Application Form</h4>
                 </div>
                 <div class="card-body">
-                    @using (Html.BeginForm("Apply", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("Apply", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data", id = "loanApplicationForm" }))
+
                     {
                         @Html.AntiForgeryToken()
 
@@ -63,9 +64,9 @@
                         </div>
 
                         @*<div class="mb-4">
-                            @Html.Label("Photo", htmlAttributes: new { @class = "form-label" })
-                            <input type="file" name="Photo" class="form-control" />
-                        </div>*@
+                @Html.Label("Photo", htmlAttributes: new { @class = "form-label" })
+                <input type="file" name="Photo" class="form-control" />
+            </div>*@
 
                         <div class="d-grid">
                             <button type="submit" id="submitBtn" class="btn btn-success btn-lg">

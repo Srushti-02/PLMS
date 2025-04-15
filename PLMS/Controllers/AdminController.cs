@@ -60,7 +60,7 @@ namespace PLMS.Controllers
                     fullName = model.fullName,
                     phoneNum = model.phoneNum,
                     role = model.role,
-                    access = model.access,
+                    access = "Enabled",
                 };
 
                 _db.USERs.Add(user);

@@ -14,7 +14,23 @@ namespace PLMS.Controllers
 
         public ActionResult Dashboard()
         {
-            int officerId = Convert.ToInt32(Session["userID"]);  // assuming officer is logged in and session is set
+            if (Session["userID"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            int userId = Convert.ToInt32(Session["userID"]);
+
+            // Find officer using userID (foreign key)
+            var officer = _db.Officers.FirstOrDefault(o => o.userID == userId);
+
+            if (officer == null)
+            {
+                TempData["Error"] = "Officer profile not found for this user.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            int officerId = officer.officerID;
 
             var assignedApplications = _db.Officers
                 .Where(o => o.officerID == officerId)
@@ -29,10 +45,11 @@ namespace PLMS.Controllers
                     Remark = o.LoanApplication.LoanStatu.remark
                 }).ToList();
 
-            ViewBag.Username = _db.USERs.FirstOrDefault(u => u.userID == officerId)?.fullName;
+            ViewBag.Username = _db.USERs.FirstOrDefault(u => u.userID == userId)?.fullName;
 
             return View(assignedApplications);
         }
+
 
         [HttpPost]
         public ActionResult UpdateStatus(int applicationId, string decision)
@@ -48,12 +65,6 @@ namespace PLMS.Controllers
             }
 
             return RedirectToAction("Dashboard");
-        }
-
-        public ActionResult Logout()
-        {
-            Session.Clear();
-            return RedirectToAction("Login", "Home");
         }
     }
 

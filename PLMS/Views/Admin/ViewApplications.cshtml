@@ -1,47 +1,63 @@
 ﻿@model IEnumerable<PLMS.Models.ModelViews.AdminApplicationViewModel>
 
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>EditAccess</title>
+    <title>View Applicants</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body style="background-color: #f8f9fa;">
 
-    @using (Html.BeginForm("AssignOfficer", "Admin", FormMethod.Post))
-    {
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Application ID</th>
-                    <th>Applicant</th>
-                    <th>Status</th>
-                    <th>Officer Assigned</th>
-                    <th>Assign New Officer</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var app in Model)
-                {
-                    <tr>
-                        <td>@app.ApplicationId</td>
-                        <td>@app.ApplicantName</td>
-                        <td>@app.Status</td>
-                        <td>@app.AssignedOfficerName</td>
-                        <td>
-                            @Html.DropDownList("officerId_" + app.ApplicationId, app.OfficersList, "-- Select Officer --", new { @class = "form-control" })
-                        </td>
-                        <td>
-                            <button type="submit" name="applicationId" value="@app.ApplicationId" class="btn btn-primary">Assign</button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
+    <!-- 📋 View Applicants Heading -->
+    <div class="container mt-4">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary">📋 View Applicants</h2>
+            <p class="text-muted">Assign officers to handle each applicant’s case</p>
+        </div>
+    </div>
+
+    <!-- Officer Assignment Table -->
+    <div class="container mb-5">
+        @using (Html.BeginForm("AssignOfficer", "Admin", FormMethod.Post))
+        {
+            <div class="card shadow border-0">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th>🙍 Applicant</th>
+                                    <th>📌 Status</th>
+                                    <th>👮 Officer Assigned</th>
+                                    <th>🔁 Assign New Officer</th>
+                                    <th>✅ Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @foreach (var app in Model)
+                                {
+                                    <tr>
+                                        <td>@app.ApplicantName</td>
+                                        <td>@app.Status</td>
+                                        <td>@app.AssignedOfficerName</td>
+                                        <td>
+                                            @Html.DropDownList("officerId_" + app.ApplicationId, app.OfficersList, "-- Select Officer --", new { @class = "form-select form-select-sm" })
+                                        </td>
+                                        <td>
+                                            <button type="submit" name="applicationId" value="@app.ApplicationId" class="btn btn-outline-primary btn-sm">
+                                                Assign
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

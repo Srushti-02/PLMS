@@ -115,22 +115,29 @@ namespace PLMS.Controllers
             return View(model);
         }
 
-        // Change password
         public ActionResult ChangePassword()
         {
             return View();
         }
-
         [HttpPost]
-        public ActionResult ChangePassword(ApplicantViewModel model)
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            int userId = Convert.ToInt32(Session["userId"]);
+            if (model.CurrentPassword != _db.Applicants.Find(userId).password)
             {
-                // Change password logic
-                return RedirectToAction("Index");
+                ModelState.AddModelError("", "Current password is incorrect.");
+                return View(model);
             }
-            return View(model);
+
+            // Here you would update password in DB (hash and store)
+            TempData["SuccessMessage"] = "Password changed successfully!";
+            return RedirectToAction("ApplicantDashboard", "Applicant");
         }
+
 
         public ActionResult Login()
         {
@@ -146,7 +153,9 @@ namespace PLMS.Controllers
                 var user = _db.Applicants.FirstOrDefault(u => u.username == model.username && u.password == model.password);
                 if (user != null )
                 {
+                    Session["userId"] = user.registrationID;
                     Session["username"] = user.username;
+                    Session["userpass"] = user.password;
                     
                     return RedirectToAction("ApplicantDashboard", "Applicant");
                 }

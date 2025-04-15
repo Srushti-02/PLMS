@@ -152,6 +152,7 @@
     <Compile Include="Models\ModelViews\AdminApplicationViewModel.cs" />
     <Compile Include="Models\ModelViews\AdminViewModel.cs" />
     <Compile Include="Models\ModelViews\ApplicantViewModel.cs" />
+    <Compile Include="Models\ModelViews\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ModelViews\LOViewModel.cs" />
     <Compile Include="Models\ModelViews\LoginModelView.cs" />
     <Compile Include="Models\ModelViews\SignupViewModel.cs" />
@@ -173,12 +174,12 @@
     <Content Include="Views\Admin\Admin.cshtml" />
     <Content Include="Views\Admin\AddNew.cshtml" />
     <Content Include="Views\Admin\EditAccess.cshtml" />
-    <Content Include="Views\LoanOfficer\LODashboard.cshtml" />
     <Content Include="Views\Applicant\Apply.cshtml" />
     <Content Include="Views\Applicant\Login.cshtml" />
     <Content Include="Views\Applicant\ApplicantDashboard.cshtml" />
     <Content Include="Views\Admin\ViewApplications.cshtml" />
     <Content Include="Views\Officer\Dashboard.cshtml" />
+    <Content Include="Views\Applicant\ChangePassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
