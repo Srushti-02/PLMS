@@ -4,7 +4,7 @@
     ViewBag.Title = "New Application";
 }
 
-<!-- Bootstrap CDN (if layout isn't used) -->
+<!-- Bootstrap CDN -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
 <div class="container mt-5">
@@ -12,65 +12,64 @@
         <div class="col-md-10">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">📄 Application Form</h4>
+                    <h4 class="mb-0">📄 New Personal Loan Application</h4>
                 </div>
                 <div class="card-body">
                     @using (Html.BeginForm("Apply", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data", id = "loanApplicationForm" }))
-
                     {
                         @Html.AntiForgeryToken()
 
-
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.FullName, htmlAttributes: new { @class = "form-label" })
+                            @Html.LabelFor(m => m.FullName, "🙍 Full Name", new { @class = "form-label" })
                             @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", placeholder = "Enter your full name" })
                         </div>
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Email, htmlAttributes: new { @class = "form-label" })
+                            @Html.LabelFor(m => m.Email, "📧 Email Address", new { @class = "form-label" })
                             @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter your email", type = "email" })
                         </div>
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Address, htmlAttributes: new { @class = "form-label" })
+                            @Html.LabelFor(m => m.Address, "🏠 Residential Address", new { @class = "form-label" })
                             @Html.TextAreaFor(m => m.Address, new { @class = "form-control", placeholder = "Enter your address", rows = 3 })
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                @Html.LabelFor(m => m.AadhaarNumber, htmlAttributes: new { @class = "form-label" })
+                                @Html.LabelFor(m => m.AadhaarNumber, "🆔 Aadhaar Number", new { @class = "form-label" })
                                 @Html.TextBoxFor(m => m.AadhaarNumber, new { @class = "form-control", placeholder = "Enter Aadhaar Number" })
                             </div>
                             <div class="col-md-6">
-                                @Html.LabelFor(m => m.PANNumber, htmlAttributes: new { @class = "form-label" })
+                                @Html.LabelFor(m => m.PANNumber, "💳 PAN Number", new { @class = "form-label" })
                                 @Html.TextBoxFor(m => m.PANNumber, new { @class = "form-control", placeholder = "Enter PAN Number" })
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                @Html.LabelFor(m => m.DOB, htmlAttributes: new { @class = "form-label" })
+                                @Html.LabelFor(m => m.DOB, "🎂 Date of Birth", new { @class = "form-label" })
                                 @Html.TextBoxFor(m => m.DOB, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
                             </div>
                             <div class="col-md-6">
-                                @Html.LabelFor(m => m.MonthlyIncome, htmlAttributes: new { @class = "form-label" })
+                                @Html.LabelFor(m => m.MonthlyIncome, "💰 Monthly Income", new { @class = "form-label" })
                                 @Html.TextBoxFor(m => m.MonthlyIncome, new { @class = "form-control", placeholder = "Enter Monthly Income", type = "number", step = "0.01" })
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            @Html.LabelFor(m => m.CompanyName, htmlAttributes: new { @class = "form-label" })
+                        <div class="mb-4">
+                            @Html.LabelFor(m => m.CompanyName, "🏢 Company Name", new { @class = "form-label" })
                             @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control", placeholder = "Enter Company Name" })
                         </div>
 
+                        @* Optional photo upload (can uncomment later) *@
                         @*<div class="mb-4">
-                @Html.Label("Photo", htmlAttributes: new { @class = "form-label" })
-                <input type="file" name="Photo" class="form-control" />
-            </div>*@
+                                @Html.Label("Photo", "📷 Upload Photo", new { @class = "form-label" })
+                                <input type="file" name="Photo" class="form-control" />
+                            </div>*@
 
                         <div class="d-grid">
                             <button type="submit" id="submitBtn" class="btn btn-success btn-lg">
-                                <i class="fas fa-paper-plane me-1"></i> Submit Application
+                                🚀 Submit Application
                             </button>
                         </div>
                     }
@@ -80,10 +79,11 @@
     </div>
 </div>
 
+<!-- Disable submit button after click -->
 <script>
     document.getElementById("loanApplicationForm").addEventListener("submit", function () {
         var btn = document.getElementById("submitBtn");
         btn.disabled = true;
-        btn.innerText = "Submitting...";
+        btn.innerText = "⏳ Submitting...";
     });
 </script>

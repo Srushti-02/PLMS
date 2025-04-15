@@ -115,6 +115,7 @@
     <Compile Include="Controllers\ApplicantController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\LoanInspectorController.cs" />
     <Compile Include="Controllers\OfficerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -153,6 +154,7 @@
     <Compile Include="Models\ModelViews\AdminViewModel.cs" />
     <Compile Include="Models\ModelViews\ApplicantViewModel.cs" />
     <Compile Include="Models\ModelViews\ChangePasswordViewModel.cs" />
+    <Compile Include="Models\ModelViews\LoanInspectorViewModel.cs" />
     <Compile Include="Models\ModelViews\LOViewModel.cs" />
     <Compile Include="Models\ModelViews\LoginModelView.cs" />
     <Compile Include="Models\ModelViews\SignupViewModel.cs" />
@@ -180,6 +182,7 @@
     <Content Include="Views\Admin\ViewApplications.cshtml" />
     <Content Include="Views\Officer\Dashboard.cshtml" />
     <Content Include="Views\Applicant\ChangePassword.cshtml" />
+    <Content Include="Views\LoanInspector\Dashboard.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

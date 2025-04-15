@@ -105,7 +105,7 @@ namespace PLMS.Controllers
         {
             string officerKey = "officerId_" + applicationId;
             int officerId = int.Parse(form[officerKey]);
-
+            
             var officer = _db.USERs.FirstOrDefault(o => o.userID == officerId);
             if (officer != null)
             {

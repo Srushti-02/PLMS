@@ -21,9 +21,8 @@ namespace PLMS.Controllers
 
             int userId = Convert.ToInt32(Session["userID"]);
 
-            // Find officer using userID (foreign key)
+            // Get the current officer's ID
             var officer = _db.Officers.FirstOrDefault(o => o.userID == userId);
-
             if (officer == null)
             {
                 TempData["Error"] = "Officer profile not found for this user.";
@@ -32,8 +31,9 @@ namespace PLMS.Controllers
 
             int officerId = officer.officerID;
 
+            // Get all applications assigned to this officer with 'Pending' status
             var assignedApplications = _db.Officers
-                .Where(o => o.officerID == officerId)
+                .Where(o => o.userID == userId && o.LoanApplication.LoanStatu.loanStatus == "Pending")
                 .Select(o => new LOViewModel
                 {
                     ApplicationId = o.applicationID,
@@ -51,21 +51,31 @@ namespace PLMS.Controllers
         }
 
 
+
         [HttpPost]
-        public ActionResult UpdateStatus(int applicationId, string decision)
+        public ActionResult UpdateStatus(int applicationId, string status)
         {
             var loanStatus = _db.LoanStatus.FirstOrDefault(s => s.applicationID == applicationId);
 
             if (loanStatus != null)
             {
-                loanStatus.loanStatus = decision == "Approve" ? "Approved" : "Rejected";
-                loanStatus.remark = decision == "Approve" ? "Approved by Loan Officer" : "Rejected by Loan Officer";
+                if (status == "Approved")
+                {
+                    loanStatus.loanStatus = "Approved";
+                    loanStatus.remark = "Approved by Loan Officer";
+                }
+                else if (status == "Rejected")
+                {
+                    loanStatus.loanStatus = "Rejected";
+                    loanStatus.remark = "Rejected by Loan Officer";
+                }
 
                 _db.SaveChanges();
             }
 
             return RedirectToAction("Dashboard");
         }
+
     }
 
 }
