@@ -15,12 +15,42 @@ namespace PLMS.Controllers
     {
         G1IBMDbEntities _db = new G1IBMDbEntities();
         // GET: Applicant
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginModelView model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _db.Applicants.FirstOrDefault(u => u.username == model.username && u.password == model.password);
+                if (user != null)
+                {
+                    Session["userId"] = user.registrationID;
+                    Session["username"] = user.username;
+                    Session["userpass"] = user.password;
+                    Session["name"] = user.fullName;
+
+                    return RedirectToAction("ApplicantDashboard", "Applicant");
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError("", "User doesn't exists");
+            return View(model);
+        }
+        
         public ActionResult ApplicantDashboard()
         {
             string username = Session["username"]?.ToString();
             if (string.IsNullOrEmpty(username))
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Applicant");
             }
 
             var applicant = _db.Applicants
@@ -30,7 +60,7 @@ namespace PLMS.Controllers
             if (applicant == null)
             {
                 TempData["FailureMessage"] = "Applicant not found.";
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Applicant");
             }
 
             // Prepare ViewModel from the LoanApplications of this applicant
@@ -39,7 +69,7 @@ namespace PLMS.Controllers
                 ApplicationId = app.applicationID,
                 SubmissionDate = app.dob, // Change this if actual submission date exists
                 Status = app.LoanStatu?.loanStatus ?? "Pending",
-
+                Remark = app.LoanStatu.remark,
                 RegistrationId = app.registrationID.ToString(),
                 FullName = applicant.fullName,
                 Email = applicant.username,
@@ -48,7 +78,9 @@ namespace PLMS.Controllers
                 PANNumber = app.panNum,
                 DOB = app.dob,
                 MonthlyIncome = app.monthlyIncome,
-                CompanyName = app.companyName
+                CompanyName = app.companyName,
+                AssignedOfficer = _db.Officers.FirstOrDefault(o => o.applicationID == app.applicationID) != null ?
+                      "Assigned" : null
             }).ToList();
 
             return View(viewModel);
@@ -56,12 +88,22 @@ namespace PLMS.Controllers
 
         public ActionResult Apply()
         {
+            string username = Session["username"]?.ToString();
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Applicant");
+            }
             return View();
         }
 
         [HttpPost]
         public ActionResult Apply(ApplicantViewModel model)
         {
+            string username = Session["username"]?.ToString();
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Applicant");
+            }
             var registrationId = _db.Applicants.FirstOrDefault(u => u.username == model.Email).registrationID;
             if (ModelState.IsValid)
             {
@@ -97,33 +139,93 @@ namespace PLMS.Controllers
             return View(model);
         }
 
-
-
         // Edit profile
-        public ActionResult Edit()
+        public ActionResult Edit(int id)
         {
-            return View();
+            
+            var application = _db.LoanApplications.FirstOrDefault(x => x.applicationID == id);
+
+            if (application == null)
+                return HttpNotFound();
+
+            // Check if it's editable
+            var status = _db.LoanStatus.FirstOrDefault(x => x.applicationID == id);
+            var officer = _db.Officers.FirstOrDefault(o => o.applicationID == id);
+
+            if (status != null && status.loanStatus != "Rejected" && officer != null)
+            {
+                TempData["FailureMessage"] = "This application cannot be edited.";
+                return RedirectToAction("ApplicantDashboard");
+            }
+
+            var viewModel = new ApplicantViewModel
+            {
+                ApplicationId = application.applicationID,
+                Email = application.email,
+                Address = application.address,
+                AadhaarNumber = application.adharNum,
+                PANNumber = application.panNum,
+                DOB = application.dob,
+                MonthlyIncome = application.monthlyIncome,
+                CompanyName = application.companyName
+            };
+
+            return View(viewModel);
         }
+
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(ApplicantViewModel model)
         {
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var application = _db.LoanApplications.FirstOrDefault(x => x.applicationID == model.ApplicationId);
+
+            if (application == null)
+                return HttpNotFound();
+
+            var status = _db.LoanStatus.FirstOrDefault(x => x.applicationID == model.ApplicationId);
+            var officer = _db.Officers.FirstOrDefault(o => o.applicationID == model.ApplicationId);
+
+            if (status != null && status.loanStatus != "Rejected" && officer != null)
             {
-                // Update applicant info
-                return RedirectToAction("Index");
+                TempData["FailureMessage"] = "This application cannot be edited.";
+                return RedirectToAction("ApplicantDashboard");
             }
-            return View(model);
+
+            application.address = model.Address;
+            application.adharNum = model.AadhaarNumber;
+            application.panNum = model.PANNumber;
+            application.dob = model.DOB;
+            application.monthlyIncome = model.MonthlyIncome;
+            application.companyName = model.CompanyName;
+            application.LoanStatu.loanStatus = "Pending";
+
+            _db.Entry(application).State = EntityState.Modified;
+            _db.SaveChanges();
+
+            TempData["SuccessMessage"] = "Application updated successfully!";
+            return RedirectToAction("ApplicantDashboard");
         }
+
 
         public ActionResult ChangePassword()
         {
+            string username = Session["username"]?.ToString();
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Applicant");
+            }
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
+ 
             if (!ModelState.IsValid)
                 return View(model);
 
@@ -158,34 +260,12 @@ namespace PLMS.Controllers
         }
 
 
-
-        public ActionResult Login()
+        public ActionResult LogOut()
         {
-            return View();
-        }
+            Session.Clear();
+            TempData["SuccessMessage"] = "You have been logged out.";
+            return RedirectToAction("Login", "Applicant");
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginModelView model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = _db.Applicants.FirstOrDefault(u => u.username == model.username && u.password == model.password);
-                if (user != null )
-                {
-                    Session["userId"] = user.registrationID;
-                    Session["username"] = user.username;
-                    Session["userpass"] = user.password;
-                    Session["name"] = user.fullName;
-                    
-                    return RedirectToAction("ApplicantDashboard", "Applicant");
-                }
-
-                return RedirectToAction("Index", "Home");
-            }
-
-            ModelState.AddModelError("", "User doesn't exists");
-            return View(model);
         }
     }
 }

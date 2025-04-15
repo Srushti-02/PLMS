@@ -73,32 +73,71 @@ namespace PLMS.Controllers
 
         public ActionResult ViewApplications()
         {
-            var applications = _db.LoanApplications.Include("Applicant").Include("LoanStatu").Include("Officers.USER").ToList();
-            var officers = _db.USERs.Where(u => (u.role == "LO" || u.role == "LI") && u.access!="Disabled").ToList();
+            var applications = _db.LoanApplications
+                .Include("Applicant")
+                .Include("LoanStatu")
+                .Include("Officers.USER")
+                .ToList();
 
-            var viewModel = applications.Select(app => new AdminApplicationViewModel
-            {
-                ApplicationId = app.applicationID,
-                ApplicantName = app.Applicant.fullName,
-                Status = app.LoanStatu?.loanStatus,
-                Email = app.email,
-                Address = app.address,
-                PANNumber = app.panNum,
-                AadhaarNumber = app.adharNum,
-                CompanyName = app.companyName,
-                MonthlyIncome = app.monthlyIncome,
+            var officers = _db.USERs
+                .Where(u => (u.role == "LO" || u.role == "LI") && u.access != "Disabled")
+                .ToList();
 
-                AssignedOfficerId = app.Officers.FirstOrDefault()?.officerID,
-                AssignedOfficerName = app.Officers.FirstOrDefault()?.USER?.fullName,
-                OfficersList = officers.Select(o => new SelectListItem
+            var filteredApplications = applications
+                .Where(app =>
                 {
-                    Value = o.userID.ToString(),
-                    Text = o.fullName + " (" + o.role + ")"
+                    var status = app.LoanStatu?.loanStatus ?? "Pending";
+                    var officerRoles = app.Officers.Select(o => o.USER.role).ToList();
+
+                    bool noOfficerAssigned = !app.Officers.Any();
+                    bool isPending = status == "Pending";
+
+                    bool hasLO = officerRoles.Contains("LO");
+                    bool noLI = !officerRoles.Contains("LI");
+                    bool approvedOrRejectedByLO = (status == "Approved" || status == "Rejected");
+
+                    return
+                        (noOfficerAssigned && isPending) ||                          
+                        (hasLO && noLI && approvedOrRejectedByLO);                 
                 })
+                .ToList();
+
+            var viewModel = filteredApplications.Select(app =>
+            {
+                var latestOfficer = app.Officers
+                    .OrderByDescending(o => o.officerID)
+                    .FirstOrDefault();
+
+                return new AdminApplicationViewModel
+                {
+                    ApplicationId = app.applicationID,
+                    ApplicantName = app.Applicant.fullName,
+                    Status = app.LoanStatu?.loanStatus ?? "Pending",
+                    Email = app.email,
+                    Address = app.address,
+                    PANNumber = app.panNum,
+                    AadhaarNumber = app.adharNum,
+                    CompanyName = app.companyName,
+                    MonthlyIncome = app.monthlyIncome,
+
+                    AssignedOfficerId = latestOfficer?.officerID,
+                    AssignedOfficerName = latestOfficer != null
+                        ? latestOfficer.USER?.fullName + " (" + latestOfficer.USER?.role + ")"
+                        : "Not Assigned",
+
+                    OfficersList = officers.Select(o => new SelectListItem
+                    {
+                        Value = o.userID.ToString(),
+                        Text = o.fullName + " (" + o.role + ")"
+                    })
+                };
             }).ToList();
 
             return View(viewModel);
         }
+
+
+
 
         [HttpPost]
         public ActionResult AssignOfficer(int applicationId, FormCollection form)

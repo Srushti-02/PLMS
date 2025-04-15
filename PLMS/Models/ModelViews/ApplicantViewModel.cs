@@ -22,5 +22,7 @@ namespace PLMS.Models.ModelViews
         public string CompanyName { get; set; }
         public string Remark { get; set; }
 
+        public string AssignedOfficer { get; set; } // Officer name or null if unassigned
+
     }
 }

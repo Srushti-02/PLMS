@@ -11,7 +11,16 @@ namespace PLMS.Controllers
     public class LoanInspectorController : Controller
     {
         G1IBMDbEntities _db = new G1IBMDbEntities();
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Session["username"] == null)
+            {
+                // Redirect to login page if session is not set
+                filterContext.Result = RedirectToAction("Login", "Home");
+            }
 
+            base.OnActionExecuting(filterContext);
+        }
         public ActionResult Dashboard()
         {
             if (Session["userID"] == null)

@@ -183,6 +183,7 @@
     <Content Include="Views\Officer\Dashboard.cshtml" />
     <Content Include="Views\Applicant\ChangePassword.cshtml" />
     <Content Include="Views\LoanInspector\Dashboard.cshtml" />
+    <Content Include="Views\Applicant\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

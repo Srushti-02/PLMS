@@ -17,7 +17,7 @@
             <div class="col-md-4 text-end">
                 <div class="btn-group">
                     @Html.ActionLink("🔐 Change Password", "ChangePassword", "Applicant", null, new { @class = "btn btn-outline-warning" })
-                    @Html.ActionLink("🚪 Logout", "LogOut", "Home", null, new { @class = "btn btn-outline-danger" })
+                    @Html.ActionLink("🚪 Logout", "LogOut", "Applicant", null, new { @class = "btn btn-outline-danger" })
                 </div>
             </div>
         </div>
@@ -72,7 +72,14 @@
                                         <td>@application.Remark</td>
                                         <td>
                                             <div class="btn-group">
-                                                @Html.ActionLink("✏️ Edit", "Edit", "Applicant", new { id = application.ApplicationId }, new { @class = "btn btn-sm btn-outline-primary" })
+                                                @if (application.Status == "Rejected" || string.IsNullOrEmpty(application.AssignedOfficer))
+                                                {
+                                                    <a href="@Url.Action("Edit", "Applicant", new { id = application.ApplicationId })" class="btn btn-warning btn-sm">✏️ Edit</a>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn btn-secondary btn-sm" disabled>Locked</button>
+                                                }
                                             </div>
                                         </td>
                                     </tr>
@@ -84,7 +91,7 @@
             </div>
         </div>
     </div>
-
+</div>
     @functions {
         private string GetStatusColor(string status)
         {

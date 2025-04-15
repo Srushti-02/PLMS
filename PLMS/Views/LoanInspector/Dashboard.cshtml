@@ -25,6 +25,7 @@
                 <th>Status</th>
                 <th>Remark</th>
                 <th>View History</th>
+                <th>Update Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -44,8 +45,19 @@
                         <button class="btn btn-info btn-sm" onclick="viewHistory(@item.applicantId)">📜 History</button>
                     </td>
                     <td>
-                        <button class="btn btn-success btn-sm" onclick="updateStatus(@item.ApplicationId, 'Approved')">✅ Approve</button>
-                        <button class="btn btn-danger btn-sm" onclick="updateStatus(@item.ApplicationId, 'Rejected')">❌ Disapprove</button>
+                        <select class="form-select form-select-sm status-select" id="status-@item.ApplicationId">
+                            <option value="">-- Select Status --</option>
+                            <option value="Approved">✅ Approve</option>
+                            <option value="Rejected">❌ Disapprove</option>
+                        </select>
+                    </td>
+                    <td>
+                        <form method="post" action="@Url.Action("UpdateStatus", "LoanInspector")">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="applicationId" value="@item.ApplicationId" />
+                            <input type="hidden" name="status" id="hidden-status-@item.ApplicationId" />
+                            <button type="submit" class="btn btn-primary btn-sm" onclick="return setStatus('@item.ApplicationId')">🔄 Update</button>
+                        </form>
                     </td>
                 </tr>
             }
@@ -65,7 +77,6 @@
                 <table class="table table-bordered text-center" id="historyTable">
                     <thead>
                         <tr>
-
                             <th>Email</th>
                             <th>Company</th>
                             <th>Status</th>
@@ -91,7 +102,6 @@
             tbody.empty();
             data.forEach(function (item) {
                 tbody.append(`<tr>
-
                     <td>${item.email}</td>
                     <td>${item.companyName}</td>
                     <td>${item.loanStatus}</td>
@@ -102,23 +112,14 @@
         });
     }
 
-    function updateStatus(applicationId, status) {
-    $.ajax({
-        url: '@Url.Action("UpdateStatus", "LoanInspector")',
-        type: 'POST',
-        data: {
-            __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),
-            applicationId: applicationId,
-            status: status
-        },
-        success: function () {
-            location.reload();
-        },
-        error: function (xhr, status, error) {
-            console.error("Error:", xhr.responseText);
-            alert('Something went wrong while updating status!');
+    function setStatus(applicationId) {
+        var selectedStatus = document.getElementById("status-" + applicationId).value;
+        var hiddenInput = document.getElementById("hidden-status-" + applicationId);
+        if (!selectedStatus) {
+            alert("Please select a status before updating.");
+            return false; // prevent form submit
         }
-    });
-}
-
+        hiddenInput.value = selectedStatus;
+        return true;
+    }
 </script>
