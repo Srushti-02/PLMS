@@ -115,7 +115,7 @@
     <Compile Include="Controllers\ApplicantController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\LoanOfficerController.cs" />
+    <Compile Include="Controllers\OfficerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -149,8 +149,10 @@
     <Compile Include="Models\DbModel\USER.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModelViews\AdminApplicationViewModel.cs" />
     <Compile Include="Models\ModelViews\AdminViewModel.cs" />
     <Compile Include="Models\ModelViews\ApplicantViewModel.cs" />
+    <Compile Include="Models\ModelViews\LOViewModel.cs" />
     <Compile Include="Models\ModelViews\LoginModelView.cs" />
     <Compile Include="Models\ModelViews\SignupViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -170,12 +172,13 @@
     <Content Include="Views\Home\SignUP.cshtml" />
     <Content Include="Views\Admin\Admin.cshtml" />
     <Content Include="Views\Admin\AddNew.cshtml" />
-    <Content Include="Views\Admin\ViewApplicants.cshtml" />
     <Content Include="Views\Admin\EditAccess.cshtml" />
     <Content Include="Views\LoanOfficer\LODashboard.cshtml" />
     <Content Include="Views\Applicant\Apply.cshtml" />
     <Content Include="Views\Applicant\Login.cshtml" />
     <Content Include="Views\Applicant\ApplicantDashboard.cshtml" />
+    <Content Include="Views\Admin\ViewApplications.cshtml" />
+    <Content Include="Views\Officer\Dashboard.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

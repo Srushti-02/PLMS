@@ -32,8 +32,9 @@ namespace PLMS.Controllers
                 if (user != null && user.access!="Disabled")
                 {
                     Session["username"] = user.username;
+                    Session["userID"] = user.userID;
                     if (user.role == "Admin") return RedirectToAction("Admin", "Admin");
-                    else if (user.role == "LO") return RedirectToAction("LODashboard", "LoanOfficer");
+                    else if (user.role == "LO") return RedirectToAction("Dashboard", "Officer");
                     else if (user.role == "LI") return RedirectToAction("LIDashboard", "LoanOfficer");
                     else return RedirectToAction("Index", "Home");
                 }

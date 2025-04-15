@@ -68,7 +68,7 @@
                         </div>*@
 
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success btn-lg">
+                            <button type="submit" id="submitBtn" class="btn btn-success btn-lg">
                                 <i class="fas fa-paper-plane me-1"></i> Submit Application
                             </button>
                         </div>
@@ -78,3 +78,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById("loanApplicationForm").addEventListener("submit", function () {
+        var btn = document.getElementById("submitBtn");
+        btn.disabled = true;
+        btn.innerText = "Submitting...";
+    });
+</script>

@@ -1,18 +1,102 @@
-﻿
+﻿@model IEnumerable<PLMS.Models.ModelViews.ApplicantViewModel>
 @{
-    Layout = null;
+    ViewBag.Title = "Applicant Dashboard";
 }
 
-<!DOCTYPE html>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<div class="container mt-4 border rounded p-4 shadow-sm" style="border: 2px solid #dee2e6; background-color: #fefefe;">
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>ApplicantDashboard</title>
-</head>
-<body>
-    <div> 
-        hi
+    <div class="container mt-5">
+        <!-- Header Section -->
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-8">
+                <h2 class="fw-bold">👋 Welcome, <span class="text-primary">@User.Identity.Name</span></h2>
+                <p class="text-muted">View your previous loan applications below.</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <div class="btn-group">
+                    @Html.ActionLink("🔐 Change Password", "ChangePassword", "Applicant", null, new { @class = "btn btn-outline-warning" })
+                    @Html.ActionLink("🚪 Logout", "LogOut", "Home", null, new { @class = "btn btn-outline-danger" })
+                </div>
+            </div>
+        </div>
+
+        <!-- Apply Button Row -->
+        <div class="row mb-3">
+            <div class="col text-end">
+                @Html.ActionLink("➕ Apply for New Loan", "Apply", "Applicant", null, new { @class = "btn btn-success btn-lg shadow-sm" })
+            </div>
+        </div>
+
+        <!-- Applications Card -->
+        <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-folder-open me-2"></i>Your Loan Applications</h5>
+            </div>
+            <div class="card-body">
+                @if (Model == null || !Model.Any())
+                {
+                    <div class="alert alert-info text-center">
+                        <i class="fas fa-info-circle me-2"></i><strong>No applications found.</strong>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>📄 Application ID</th>
+                                    <th>🧾 Full Name</th>
+                                    <th>📧 Email</th>
+                                    <th>🏢 Company</th>
+                                    <th>💰 Monthly Income</th>
+                                    <th>📌 Status</th>
+                                    <th>🗒️ Remarks</th>
+                                    <th>⚙️ Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var application in Model)
+                                {
+                                    <tr>
+                                        <td class="fw-semibold">@application.ApplicationId</td>
+                                        <td>@application.FullName</td>
+                                        <td>@application.Email</td>
+                                        <td>@application.CompanyName</td>
+                                        <td>@String.Format("{0:C}", application.MonthlyIncome)</td>
+                                        <td>
+                                            <span class="badge rounded-pill bg-@GetStatusColor(application.Status)">
+                                                @application.Status
+                                            </span>
+                                        </td>
+                                        <td>@application.Remark</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                @Html.ActionLink("✏️ Edit", "Edit", "Applicant", new { id = application.ApplicationId }, new { @class = "btn btn-sm btn-outline-primary" })
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-</body>
-</html>
+
+    @functions {
+        private string GetStatusColor(string status)
+        {
+            switch (status?.ToLowerInvariant())
+            {
+                case "submitted": return "info";
+                case "approved": return "success";
+                case "rejected": return "danger";
+                case "pending": return "warning";
+                default: return "secondary";
+            }
+        }
+    }

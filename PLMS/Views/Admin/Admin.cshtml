@@ -7,51 +7,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>@ViewBag.Title</title>
+    <!-- Bootstrap & Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-10">
-                <!-- Admin Dashboard Card -->
-                <div class="card">
-                    <div class="card-header text-center bg-primary text-white">
-                        <h3>Welcome Admin</h3>
-                    </div>
-                    <div class="card-body">
-                        <!-- Admin Options -->
-                        <div class="list-group">
-                            <!-- Option 1: Add New User -->
-                            <a href="@Url.Action("AddNew", "Admin")" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                Add New User
-                                <span class="badge bg-success">+</span>
-                            </a>
+    <!-- Page Container with border -->
+    <div class="container mt-4 border rounded p-4 shadow-sm" style="border: 2px solid #dee2e6; background-color: #fefefe;">
 
-                            <!-- Option 2: Edit Access -->
-                            <a href="@Url.Action("EditAccess", "Admin")" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                Edit User Access
-                                <span class="badge bg-warning">Edit</span>
-                            </a>
+        <!-- Top Header -->
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+            <div>
+                <h2 class="fw-bold">👋 Welcome, Admin</h2>
+                <p class="text-muted mb-0">🎯 Admin Dashboard – Manage users, roles, and applications efficiently.</p>
+            </div>
+            <div class="ms-auto">
+                @Html.ActionLink("🚪 Logout", "LogOut", "Home", null, new { @class = "btn btn-danger" })
+            </div>
+        </div>
 
-                            <!-- Option 3: View Applicants -->
-                            <a href="@Url.Action("ViewApplicants", "Admin")" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                View Applicants
-                                <span class="badge bg-info">View</span>
-                            </a>
-                        </div>
+        <!-- Admin Actions Section -->
+        <div class="row mb-5">
+            <!-- Add New User -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow border-0 h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">👤➕ Add New User</h5>
                     </div>
-                    <div class="card-footer text-center">
-                        <small>Admin Dashboard - Manage your platform</small>
+                    <div class="card-body text-center">
+                        <p>Create a new user with roles and access.</p>
+                        <a href="@Url.Action("AddNew", "Admin")" class="btn btn-outline-success w-100">➕ Add User</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Access -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow border-0 h-100">
+                    <div class="card-header bg-warning text-white">
+                        <h5 class="mb-0">🛡️ Edit User Access</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <p>Modify user roles & permissions easily.</p>
+                        <a href="@Url.Action("EditAccess", "Admin")" class="btn btn-outline-warning w-100">🛠️ Manage Access</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Applicants -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow border-0 h-100">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">📋 View Applicants</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <p>Check and process new applicants.</p>
+                        <a href="@Url.Action("ViewApplications", "Admin")" class="btn btn-outline-info w-100">👁️ View Applications</a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-muted pt-3 pb-4 border-top">
+            🌐 Admin Panel © 2025
+        </footer>
     </div>
 
-    <!-- Bootstrap JS (Optional, for form validation, modals, etc.) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Helper: Status Badge Color -->
+    @functions {
+        private string GetStatusColor(string status)
+        {
+            switch (status?.ToLowerInvariant())
+            {
+                case "submitted": return "info";
+                case "approved": return "success";
+                case "rejected": return "danger";
+                case "pending": return "warning";
+                default: return "secondary";
+            }
+        }
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

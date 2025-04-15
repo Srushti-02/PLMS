@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using PLMS.Models;
 using PLMS.Models.DbModel;
 using PLMS.Models.ModelViews;
+using System.Data.Entity.Migrations.Infrastructure;
 
 namespace PLMS.Controllers
 {
@@ -34,46 +35,6 @@ namespace PLMS.Controllers
             return View();
         }
 
-
-        //private void SendWelcomeEmail(string username, string password, string toEmail)
-        //{
-        //    var fromAddress = new MailAddress("srushtishindkar93@gmail.com", "Srushti Shindkar");
-        //    var toAddress = new MailAddress(toEmail);
-        //    const string fromPassword = ""; // Use secure secrets in real apps
-        //    const string subject = "Welcome to Our System";
-        //    string body = $@"
-        //        Hello {username},
-
-        //        Your account has been created successfully.
-
-        //        Username: {username}
-        //        Password: {password}
-
-        //        Please login at: https://yourwebsite.com/Login
-
-        //        Best regards,
-        //        Admin Team
-        //    ";
-
-        //    var smtp = new SmtpClient
-        //    {
-        //        Host = "smtp.gmail.com", // e.g., smtp.gmail.com
-        //        Port = 587,
-        //        EnableSsl = true,
-        //        DeliveryMethod = SmtpDeliveryMethod.Network,
-        //        UseDefaultCredentials = false,
-        //        Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-        //    };
-
-        //    using (var message = new MailMessage(fromAddress, toAddress)
-        //    {
-        //        Subject = subject,
-        //        Body = body
-        //    })
-        //    {
-        //        smtp.Send(message);
-        //    }
-        //}
 
 
         public ActionResult AddNew()
@@ -104,25 +65,62 @@ namespace PLMS.Controllers
 
                 _db.USERs.Add(user);
                 _db.SaveChanges();
-                //try
-                //{
-                //    SendWelcomeEmail(model.fullName, model.userpass, model.username); // assuming you have model.email
-                //}
-                //catch (Exception ex)
-                //{
-                //    // Log or handle email error
-                //    ModelState.AddModelError("", "User added, but failed to send email: " + ex.Message);
-                //}
+
                 return RedirectToAction("Admin", "Admin");
             }
             return View(model);
         }
 
-        public ActionResult ViewApplicants()
+        public ActionResult ViewApplications()
         {
-            var applicant = _db.Applicants.ToList();
-            return View(applicant);
+            var applications = _db.LoanApplications.Include("Applicant").Include("LoanStatu").Include("Officers.USER").ToList();
+            var officers = _db.USERs.Where(u => (u.role == "LO" || u.role == "LI") && u.access!="Disabled").ToList();
+
+            var viewModel = applications.Select(app => new AdminApplicationViewModel
+            {
+                ApplicationId = app.applicationID,
+                ApplicantName = app.Applicant.fullName,
+                Status = app.LoanStatu?.loanStatus,
+                Email = app.email,
+                Address = app.address,
+                PANNumber = app.panNum,
+                AadhaarNumber = app.adharNum,
+                CompanyName = app.companyName,
+                MonthlyIncome = app.monthlyIncome,
+
+                AssignedOfficerId = app.Officers.FirstOrDefault()?.officerID,
+                AssignedOfficerName = app.Officers.FirstOrDefault()?.USER?.fullName,
+                OfficersList = officers.Select(o => new SelectListItem
+                {
+                    Value = o.userID.ToString(),
+                    Text = o.fullName + " (" + o.role + ")"
+                })
+            }).ToList();
+
+            return View(viewModel);
         }
+
+        [HttpPost]
+        public ActionResult AssignOfficer(int applicationId, FormCollection form)
+        {
+            string officerKey = "officerId_" + applicationId;
+            int officerId = int.Parse(form[officerKey]);
+
+            var officer = _db.USERs.FirstOrDefault(o => o.userID == officerId);
+            if (officer != null)
+            {
+                _db.Officers.Add(new Officer
+                {
+                    userID = officer.userID,
+                    applicationID = applicationId
+                });
+                _db.SaveChanges();
+            }
+
+            return RedirectToAction("ViewApplications");
+        }
+
+
         public ActionResult EditAccess()
         {
             var user = _db.USERs.Where(u => u.role != "Admin").ToList();

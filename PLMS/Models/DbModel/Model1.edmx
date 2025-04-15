@@ -33,7 +33,7 @@
           <Key>
             <PropertyRef Name="applicationID" />
           </Key>
-          <Property Name="applicationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="applicationID" Type="int" Nullable="false" />
           <Property Name="registrationID" Type="int" Nullable="false" />
           <Property Name="loanStatus" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="remark" Type="varchar" MaxLength="50" Nullable="false" />

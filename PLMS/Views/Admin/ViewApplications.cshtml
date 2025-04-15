@@ -1,0 +1,48 @@
+﻿@model IEnumerable<PLMS.Models.ModelViews.AdminApplicationViewModel>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EditAccess</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    @using (Html.BeginForm("AssignOfficer", "Admin", FormMethod.Post))
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Application ID</th>
+                    <th>Applicant</th>
+                    <th>Status</th>
+                    <th>Officer Assigned</th>
+                    <th>Assign New Officer</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var app in Model)
+                {
+                    <tr>
+                        <td>@app.ApplicationId</td>
+                        <td>@app.ApplicantName</td>
+                        <td>@app.Status</td>
+                        <td>@app.AssignedOfficerName</td>
+                        <td>
+                            @Html.DropDownList("officerId_" + app.ApplicationId, app.OfficersList, "-- Select Officer --", new { @class = "form-control" })
+                        </td>
+                        <td>
+                            <button type="submit" name="applicationId" value="@app.ApplicationId" class="btn btn-primary">Assign</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -16,30 +16,43 @@ namespace PLMS.Controllers
         // GET: Applicant
         public ActionResult ApplicantDashboard()
         {
-            return View();
+            string username = Session["username"]?.ToString();
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            var applicant = _db.Applicants
+                .Include("LoanApplications.LoanStatu") // Include related LoanApplications and LoanStatus
+                .FirstOrDefault(a => a.username == username);
+
+            if (applicant == null)
+            {
+                TempData["FailureMessage"] = "Applicant not found.";
+                return RedirectToAction("Login", "Home");
+            }
+
+            // Prepare ViewModel from the LoanApplications of this applicant
+            var viewModel = applicant.LoanApplications.Select(app => new ApplicantViewModel
+            {
+                ApplicationId = app.applicationID,
+                SubmissionDate = app.dob, // Change this if actual submission date exists
+                Status = app.LoanStatu?.loanStatus ?? "Pending",
+
+                RegistrationId = app.registrationID.ToString(),
+                FullName = applicant.fullName,
+                Email = applicant.username,
+                Address = app.address,
+                AadhaarNumber = app.adharNum,
+                PANNumber = app.panNum,
+                DOB = app.dob,
+                MonthlyIncome = app.monthlyIncome,
+                CompanyName = app.companyName
+            }).ToList();
+
+            return View(viewModel);
         }
-        //public ActionResult ApplicantDashboard()
-        //{
-        //    var email = Session["Email"]?.ToString();
 
-        //    if (string.IsNullOrEmpty(email))
-        //    {
-        //        return RedirectToAction("Login", "Home");
-        //    }
-
-        //    var applicant = _db.Applicants.FirstOrDefault(a => a.username == email);
-        //    if (applicant == null)
-        //    {
-        //        return RedirectToAction("Login", "Home");
-        //    }
-
-        //    var applications = _db.LoanApplications
-        //                          .Where(app => app.registrationID == applicant.registrationID)
-        //                          .ToList();
-
-        //    return View(applications);
-        //}
-        // Apply 
         public ActionResult Apply()
         {
             return View();
@@ -67,17 +80,23 @@ namespace PLMS.Controllers
 
                 _db.LoanApplications.Add(application);
                 _db.SaveChanges();
+
+                LoanStatu loanStatus = new LoanStatu
+                {
+                    LoanApplication = application,
+                    registrationID = registrationId,
+                    loanStatus = "Pending", // Default value
+                    remark = "Application submitted"
+                };
+
+                _db.LoanStatus.Add(loanStatus);
+                _db.SaveChanges();
                 return RedirectToAction("ApplicantDashboard", "Applicant");
             }
             return View(model);
         }
 
-        // View past applications
-        public ActionResult Applications()
-        {
-            var applications = _db.LoanApplications.ToList();
-            return View(applications);
-        }
+
 
         // Edit profile
         public ActionResult Edit()
