@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -127,16 +128,35 @@ namespace PLMS.Controllers
                 return View(model);
 
             int userId = Convert.ToInt32(Session["userId"]);
-            if (model.CurrentPassword != _db.Applicants.Find(userId).password)
+            var user = _db.Applicants.Find(userId);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "User not found.");
+                return View(model);
+            }
+
+            if (model.CurrentPassword != user.password)
             {
                 ModelState.AddModelError("", "Current password is incorrect.");
                 return View(model);
             }
 
-            // Here you would update password in DB (hash and store)
+            if (model.NewPassword != model.ConfirmPassword)
+            {
+                ModelState.AddModelError("", "New password and confirmation do not match.");
+                return View(model);
+            }
+
+            // Save new password (Note: You should hash passwords in production)
+            user.password = model.NewPassword;
+            _db.Entry(user).State = EntityState.Modified;
+            _db.SaveChanges();
+
             TempData["SuccessMessage"] = "Password changed successfully!";
             return RedirectToAction("ApplicantDashboard", "Applicant");
         }
+
 
 
         public ActionResult Login()
@@ -156,6 +176,7 @@ namespace PLMS.Controllers
                     Session["userId"] = user.registrationID;
                     Session["username"] = user.username;
                     Session["userpass"] = user.password;
+                    Session["name"] = user.fullName;
                     
                     return RedirectToAction("ApplicantDashboard", "Applicant");
                 }

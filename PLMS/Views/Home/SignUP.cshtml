@@ -1,5 +1,4 @@
-﻿
-@model PLMS.Models.ModelViews.SignupViewModel
+﻿@model PLMS.Models.ModelViews.SignupViewModel
 
 @{
     ViewBag.Title = "Sign Up";
@@ -19,48 +18,49 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card mt-5">
-                    <div class="card-header text-center">
-                        <h4>Sign Up</h4>
+                    <div class="card-header text-center bg-primary text-white">
+                        <h4>📝 Sign Up</h4>
                     </div>
+
                     <div class="card-body">
                         @using (Html.BeginForm("SignUp", "Home", FormMethod.Post))
                         {
                             @Html.AntiForgeryToken()
                             <div class="mb-3">
-                                @Html.LabelFor(m => m.FullName, new { @class = "form-label" })
+                                @Html.LabelFor(m => m.FullName, new { @class = "form-label" }) <span>👤</span>
                                 @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", placeholder = "Enter your full name" })
                                 @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="mb-3">
-                                @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                                @Html.LabelFor(m => m.Email, new { @class = "form-label" }) <span>📧</span>
                                 @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter your email" })
                                 @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="mb-3">
-                                @Html.LabelFor(m => m.ContactNumber, new { @class = "form-label" })
+                                @Html.LabelFor(m => m.ContactNumber, new { @class = "form-label" }) <span>📱</span>
                                 @Html.TextBoxFor(m => m.ContactNumber, new { @class = "form-control", placeholder = "Enter your contact number" })
                                 @Html.ValidationMessageFor(m => m.ContactNumber, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="mb-3">
-                                @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                                @Html.LabelFor(m => m.Password, new { @class = "form-label" }) <span>🔒</span>
                                 @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter your password" })
                                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="mb-3">
-                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-label" })
+                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-label" }) <span>✅</span>
                                 @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm your password" })
                                 @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                            <button type="submit" class="btn btn-primary w-100">🚀 Sign Up</button>
                         }
 
                         <div class="mt-3 text-center">
-                            <p>Already have an account? <a href="@Url.Action("Login", "Applicant")">Login here</a></p>
+                            <p>Already have an account? <a href="@Url.Action("Login", "Applicant")">🔑 Login here</a></p>
                         </div>
                     </div>
                 </div>
@@ -77,42 +77,37 @@
     <!-- Unobtrusive Validation -->
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/jquery.validate.unobtrusive.min.js"></script>
 
-</body>
-</html>
+    <!-- Bootstrap JS (Optional, for form validation, modals, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Basic form validation (optional) -->
+    <script>
+        document.getElementById('signupForm')?.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
 
-<!-- Bootstrap JS (Optional, for form validation, modals, etc.) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+            // Get the form fields
+            const email = document.getElementById('email')?.value;
+            const password = document.getElementById('password')?.value;
+            const confirmPassword = document.getElementById('confirmPassword')?.value;
+            const fullName = document.getElementById('fullName')?.value;
+            const contactNumber = document.getElementById('contactNumber')?.value;
 
-<!-- Basic form validation (optional) -->
-<script>
-    document.getElementById('signupForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent form submission
+            // Basic validation
+            if (password !== confirmPassword) {
+                alert('❌ Passwords do not match!');
+                return;
+            }
 
-        // Get the form fields
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        const fullName = document.getElementById('fullName').value;
-        const contactNumber = document.getElementById('contactNumber').value;
+            if (!email || !password || !confirmPassword || !fullName || !contactNumber) {
+                alert('⚠️ Please fill in all fields!');
+                return;
+            }
 
-        // Basic validation
-        if (password !== confirmPassword) {
-            alert('Passwords do not match!');
-            return;
-        }
+            alert('✅ Form submitted successfully!');
+            // Here you can send the data to your server (e.g., via an AJAX request)
 
-
-        if (!email || !password || !confirmPassword || !fullName || !contactNumber) {
-            alert('Please fill in all fields!');
-            return;
-        }
-
-        alert('Form submitted successfully!');
-        // Here you can send the data to your server (e.g., via an AJAX request)
-
-        document.getElementById('signupForm').reset();
-    });
-</script>
+            document.getElementById('signupForm').reset();
+        });
+    </script>
 </body>
 </html>

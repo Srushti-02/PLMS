@@ -11,7 +11,7 @@
         <!-- Header Section -->
         <div class="row mb-4 align-items-center">
             <div class="col-md-8">
-                <h2 class="fw-bold">👋 Welcome, <span class="text-primary">@User.Identity.Name</span></h2>
+                <h2 class="fw-bold">👋 Welcome, <span class="text-primary">@Session["name"]</span></h2>
                 <p class="text-muted">View your previous loan applications below.</p>
             </div>
             <div class="col-md-4 text-end">
@@ -47,7 +47,6 @@
                         <table class="table table-hover table-bordered align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>📄 Application ID</th>
                                     <th>🧾 Full Name</th>
                                     <th>📧 Email</th>
                                     <th>🏢 Company</th>
@@ -61,7 +60,6 @@
                                 @foreach (var application in Model)
                                 {
                                     <tr>
-                                        <td class="fw-semibold">@application.ApplicationId</td>
                                         <td>@application.FullName</td>
                                         <td>@application.Email</td>
                                         <td>@application.CompanyName</td>
