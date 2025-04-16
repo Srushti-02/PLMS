@@ -31,7 +31,7 @@ namespace PLMS.Controllers
 
         public ActionResult Admin()
         {
-            
+
             return View();
         }
 
@@ -145,11 +145,11 @@ namespace PLMS.Controllers
 
                     bool hasLO = officerRoles.Contains("LO");
                     bool noLI = !officerRoles.Contains("LI");
-                    bool approvedOrRejectedByLO = (status == "Approved" || status == "Incomplete");
+                    bool approvedOrRejectedByLO = (status == "Approved");
 
                     return
-                        (noOfficerAssigned && isPending) ||                          
-                        (hasLO && noLI && approvedOrRejectedByLO);                 
+                        (noOfficerAssigned && isPending) ||
+                        (hasLO && noLI && approvedOrRejectedByLO);
                 })
                 .ToList();
 
@@ -176,7 +176,12 @@ namespace PLMS.Controllers
                         ? latestOfficer.USER?.fullName + " (" + latestOfficer.USER?.role + ")"
                         : "Not Assigned",
 
-                    OfficersList = officers.Select(o => new SelectListItem
+                    OfficersList = officers
+                    .Where(o =>
+                        (app.LoanStatu?.loanStatus == "Pending" && o.role == "LO") ||
+                        ((app.LoanStatu?.loanStatus == "Approved") && o.role == "LI")
+                    )
+                    .Select(o => new SelectListItem
                     {
                         Value = o.userID.ToString(),
                         Text = o.fullName + " (" + o.role + ")"
@@ -195,7 +200,7 @@ namespace PLMS.Controllers
         {
             string officerKey = "officerId_" + applicationId;
             int officerId = int.Parse(form[officerKey]);
-            
+
             var officer = _db.USERs.FirstOrDefault(o => o.userID == officerId);
             if (officer != null)
             {
@@ -218,7 +223,7 @@ namespace PLMS.Controllers
         }
         [HttpPost]
         public ActionResult EditAccess(int id, string access, AdminViewModel model)
-        { 
+        {
             var user = _db.USERs.Find(id);
             if (user == null)
             {

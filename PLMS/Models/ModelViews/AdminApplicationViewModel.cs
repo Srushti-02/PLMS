@@ -14,6 +14,7 @@ namespace PLMS.Models.ModelViews
         public string Email { get; set; }
         public string Address { get; set; }
         public string PANNumber { get; set; }
+        public string Remark { get; set; }
         public string AadhaarNumber { get; set; }
         public string CompanyName { get; set; }
         public decimal MonthlyIncome { get; set; }

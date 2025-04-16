@@ -29,6 +29,7 @@
                                 <tr>
                                     <th>🙍 Applicant</th>
                                     <th>📌 Status</th>
+                                    <th>🗒️ Remark</th>
                                     <th>👮 Officer Assigned</th>
                                     <th>🔁 Assign New Officer</th>
                                     <th>✅ Action</th>
@@ -40,6 +41,7 @@
                                     <tr>
                                         <td>@app.ApplicantName</td>
                                         <td>@app.Status</td>
+                                        <td>@app.Remark</td>
                                         <td>@app.AssignedOfficerName</td>
                                         <td>
                                             @Html.DropDownList("officerId_" + app.ApplicationId, app.OfficersList, "-- Select Officer --", new { @class = "form-select form-select-sm" })
