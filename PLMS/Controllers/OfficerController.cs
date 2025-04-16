@@ -75,8 +75,8 @@ namespace PLMS.Controllers
                 }
                 else if (status == "Rejected")
                 {
-                    loanStatus.loanStatus = "Rejected";
-                    loanStatus.remark = "Rejected by Loan Officer";
+                    loanStatus.loanStatus = "Incomplete";
+                    loanStatus.remark = "Incomplete Application Stated by Loan Officer";
                 }
 
                 _db.SaveChanges();
