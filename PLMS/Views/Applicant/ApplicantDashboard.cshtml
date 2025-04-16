@@ -72,13 +72,13 @@
                                         <td>@application.Remark</td>
                                         <td>
                                             <div class="btn-group">
-                                                @if (application.Status == "Rejected" || string.IsNullOrEmpty(application.AssignedOfficer))
+                                                @if (application.Status == "Incomplete" || string.IsNullOrEmpty(application.AssignedOfficer))
                                                 {
                                                     <a href="@Url.Action("Edit", "Applicant", new { id = application.ApplicationId })" class="btn btn-warning btn-sm">✏️ Edit</a>
                                                 }
                                                 else
                                                 {
-                                                    <button class="btn btn-secondary btn-sm" disabled>Locked</button>
+                                                <button class="btn btn-secondary btn-sm" disabled>✏️ Edit</button>
                                                 }
                                             </div>
                                         </td>
@@ -92,16 +92,16 @@
         </div>
     </div>
 </div>
-    @functions {
-        private string GetStatusColor(string status)
+@functions {
+    private string GetStatusColor(string status)
+    {
+        switch (status?.ToLowerInvariant())
         {
-            switch (status?.ToLowerInvariant())
-            {
-                case "submitted": return "info";
-                case "approved": return "success";
-                case "rejected": return "danger";
-                case "pending": return "warning";
-                default: return "secondary";
-            }
+            case "submitted": return "info";
+            case "approved": return "success";
+            case "rejected": return "danger";
+            case "pending": return "warning";
+            default: return "secondary";
         }
     }
+}

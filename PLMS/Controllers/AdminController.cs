@@ -94,7 +94,7 @@ namespace PLMS.Controllers
 
                     bool hasLO = officerRoles.Contains("LO");
                     bool noLI = !officerRoles.Contains("LI");
-                    bool approvedOrRejectedByLO = (status == "Approved" || status == "Rejected");
+                    bool approvedOrRejectedByLO = (status == "Approved" || status == "Incomplete");
 
                     return
                         (noOfficerAssigned && isPending) ||                          

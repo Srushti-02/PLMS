@@ -152,7 +152,7 @@ namespace PLMS.Controllers
             var status = _db.LoanStatus.FirstOrDefault(x => x.applicationID == id);
             var officer = _db.Officers.FirstOrDefault(o => o.applicationID == id);
 
-            if (status != null && status.loanStatus != "Rejected" && officer != null)
+            if (status != null && status.loanStatus != "Incomplete" && officer != null)
             {
                 TempData["FailureMessage"] = "This application cannot be edited.";
                 return RedirectToAction("ApplicantDashboard");
@@ -190,7 +190,7 @@ namespace PLMS.Controllers
             var status = _db.LoanStatus.FirstOrDefault(x => x.applicationID == model.ApplicationId);
             var officer = _db.Officers.FirstOrDefault(o => o.applicationID == model.ApplicationId);
 
-            if (status != null && status.loanStatus != "Rejected" && officer != null)
+            if (status != null && status.loanStatus != "Incomplete" && officer != null)
             {
                 TempData["FailureMessage"] = "This application cannot be edited.";
                 return RedirectToAction("ApplicantDashboard");
@@ -203,6 +203,7 @@ namespace PLMS.Controllers
             application.monthlyIncome = model.MonthlyIncome;
             application.companyName = model.CompanyName;
             application.LoanStatu.loanStatus = "Pending";
+            application.LoanStatu.remark = "Application submitted and edited";
 
             _db.Entry(application).State = EntityState.Modified;
             _db.SaveChanges();
