@@ -256,7 +256,8 @@ namespace PLMS.Controllers
             _db.SaveChanges();
 
             TempData["SuccessMessage"] = "Password changed successfully!";
-            return RedirectToAction("ApplicantDashboard", "Applicant");
+            LogOut();
+            return RedirectToAction("Login", "Applicant");
         }
 
 

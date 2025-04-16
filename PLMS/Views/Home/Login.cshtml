@@ -25,6 +25,14 @@
                         @using (Html.BeginForm("Login", "Home", FormMethod.Post))
                         {
                             @Html.AntiForgeryToken() <!-- CSRF Protection Token -->
+                            if (ViewBag.ErrorMessage != null)
+                            {
+                                <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+                            }
+                            if(TempData["SuccessMessage"] != null)
+                            {
+                                <div class="alert alert-success">@TempData["SuccessMessage"]</div>    
+                            }
                             <div class="mb-3">
                                 <label for="username" class="form-label">👤 Username</label>
                                 @Html.TextBoxFor(m => m.username, new { @class = "form-control", placeholder = "Enter your username" })

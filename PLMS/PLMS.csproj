@@ -184,6 +184,7 @@
     <Content Include="Views\Applicant\ChangePassword.cshtml" />
     <Content Include="Views\LoanInspector\Dashboard.cshtml" />
     <Content Include="Views\Applicant\Edit.cshtml" />
+    <Content Include="Views\Home\ChangePassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

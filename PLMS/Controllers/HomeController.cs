@@ -7,16 +7,18 @@ using System.Web;
 using System.Web.Mvc;
 using PLMS.Models.DbModel;
 using PLMS.Models.ModelViews;
+
 namespace PLMS.Controllers
 {
     public class HomeController : Controller
     {
         G1IBMDbEntities _db = new G1IBMDbEntities();
-        // GET: Home
+
         public ActionResult Index()
         {
             return View();
         }
+
         public ActionResult Login()
         {
             return View();
@@ -29,25 +31,28 @@ namespace PLMS.Controllers
             if (ModelState.IsValid)
             {
                 var user = _db.USERs.FirstOrDefault(u => u.username == model.username && u.userpass == model.password);
-                if (user != null && user.access!="Disabled")
+                if (user != null)
                 {
+                    if (user.access == "Disabled")
+                    {
+                        ViewBag.ErrorMessage = "Your access has been disabled.";
+                        return View(model);
+                    }
+
                     Session["username"] = user.username;
                     Session["userID"] = user.userID;
-                    if (user.role == "Admin") return RedirectToAction("Admin", "Admin");
-                    else if (user.role == "LO") return RedirectToAction("Dashboard", "Officer");
-                    else if (user.role == "LI") return RedirectToAction("Dashboard", "LoanInspector");
-                    else return RedirectToAction("Index", "Home");
+
+                    if(user.role ==  "Admin") return RedirectToAction("Admin", "Admin");
+                    else if(user.role == "LO") return RedirectToAction("Dashboard", "Officer");
+                    else if(user.role == "LI") return RedirectToAction("Dashboard", "LoanInspector");
                 }
-                else if(user != null && user.access == "Disabled")
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                return RedirectToAction("Index", "Home");
+                ViewBag.ErrorMessage = "Invalid username or password.";
+                return View(model);
             }
 
-            ModelState.AddModelError("", "User doesn't exists");
             return View(model);
         }
+
         public ActionResult SignUP()
         {
             return View();
@@ -59,12 +64,13 @@ namespace PLMS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var applicant = _db.Applicants.FirstOrDefault(u => u.username == model.Email);
-                if(applicant != null)
+                var existingApplicant = _db.Applicants.FirstOrDefault(a => a.username == model.Email);
+                if (existingApplicant != null)
                 {
-                    ModelState.AddModelError("Email", "User with this email already exists.");
+                    ModelState.AddModelError("Email", "An account with this email already exists.");
                     return View(model);
                 }
+
                 var newApplicant = new Applicant
                 {
                     fullName = model.FullName,
@@ -72,21 +78,22 @@ namespace PLMS.Controllers
                     password = model.Password,
                     phoneNum = model.ContactNumber
                 };
+
                 try
                 {
                     _db.Applicants.Add(newApplicant);
                     _db.SaveChanges();
+
+                    return RedirectToAction("Login", "Applicant");
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "Error: " + ex.Message);
+                    ViewBag.ErrorMessage = "An error occurred during Sign Up" + ex;
                     return View(model);
                 }
-
-                TempData["SuccessMessage"] = "Signup successful!";
-                return RedirectToAction("Login", "Applicant"); 
             }
-            TempData["FailureMessage"] = "Cannot do signup";
+
+            ViewBag.ErrorMessage = "Signup failed. Please check the form and try again.";
             return View(model);
         }
 
@@ -96,5 +103,51 @@ namespace PLMS.Controllers
             TempData["SuccessMessage"] = "You have been logged out.";
             return RedirectToAction("Login", "Home");
         }
+
+        public ActionResult ChangePassword()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            int userId = Convert.ToInt32(Session["userID"]);
+            var user = _db.USERs.Find(userId);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "User not found.");
+                return View(model);
+            }
+
+            if (model.CurrentPassword != user.userpass)
+            {
+                ModelState.AddModelError("", "Current password is incorrect.");
+                return View(model);
+            }
+
+            if (model.NewPassword != model.ConfirmPassword)
+            {
+                ModelState.AddModelError("", "New password and confirmation do not match.");
+                return View(model);
+            }
+
+            // Save new password (Note: You should hash passwords in production)
+            user.userpass = model.NewPassword;
+            _db.Entry(user).State = EntityState.Modified;
+            _db.SaveChanges();
+
+            TempData["SuccessMessage"] = "Password changed successfully!";
+            LogOut();
+            return RedirectToAction("Login", "Home");
+        }
+
+
     }
 }
