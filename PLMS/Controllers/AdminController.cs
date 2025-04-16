@@ -164,6 +164,7 @@ namespace PLMS.Controllers
                     ApplicationId = app.applicationID,
                     ApplicantName = app.Applicant.fullName,
                     Status = app.LoanStatu?.loanStatus ?? "Pending",
+                    Remark = app.LoanStatu?.remark,
                     Email = app.email,
                     Address = app.address,
                     PANNumber = app.panNum,

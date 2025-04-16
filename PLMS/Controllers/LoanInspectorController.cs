@@ -69,19 +69,38 @@ namespace PLMS.Controllers
             return Json(pastApplications, JsonRequestBehavior.AllowGet);
         }
 
+        //[HttpPost]
+        //public ActionResult UpdateStatus(int applicationId, string status)
+        //{
+        //    var loanStatus = _db.LoanStatus.FirstOrDefault(ls => ls.applicationID == applicationId);
+        //    if (loanStatus != null)
+        //    {
+        //        loanStatus.loanStatus = status;
+        //        loanStatus.remark = status == "Approved" ? "Approved by Loan Inspector" : "Rejected by Loan Inspector";
+        //        _db.SaveChanges();
+        //        return new HttpStatusCodeResult(200);
+        //    }
+        //    return new HttpStatusCodeResult(404, "Loan application not found");
+        //}
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult UpdateStatus(int applicationId, string status)
         {
-            var loanStatus = _db.LoanStatus.FirstOrDefault(ls => ls.applicationID == applicationId);
+            var loanStatus = _db.LoanStatus.FirstOrDefault(s => s.applicationID == applicationId);
+
             if (loanStatus != null)
             {
-                loanStatus.loanStatus = status;
-                loanStatus.remark = status == "Approved" ? "Approved by Loan Inspector" : "Rejected by Loan Inspector";
+                if (status == "Approved")
+                {
+                    loanStatus.loanStatus = "Approved";
+                    loanStatus.remark = "Approved by Loan Inspector";
+                }
+
+
                 _db.SaveChanges();
-                return new HttpStatusCodeResult(200);
             }
-            return new HttpStatusCodeResult(404, "Loan application not found");
+
+            return RedirectToAction("Dashboard");
         }
 
 
