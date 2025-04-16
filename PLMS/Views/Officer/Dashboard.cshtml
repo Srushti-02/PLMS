@@ -4,6 +4,80 @@
     ViewBag.Title = "Loan Officer Dashboard";
 }
 
+<!--<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Loan Officer Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #f8f9fa;">
+
+    <div class="container mt-4">-->
+<!-- Header Section -->
+<!--<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary fw-bold">📋 Loan Officer Dashboard</h2>
+    <a href="@Url.Action("ChangePassword", "Officer")" class="btn btn-outline-secondary me-2">🔑 Change Password</a>
+    <a href="@Url.Action("LogOut", "Home")" class="btn btn-danger">🚪 Logout</a>
+</div>-->
+<!-- Applicants Table -->
+<!--<div class="card shadow border-0">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-primary text-center">
+                        <tr>
+                            <th>🙍 Applicant Name</th>
+                            <th>📧 Email</th>
+                            <th>🏠 Address</th>
+                            <th>🏢 Company</th>
+                            <th>📌 Status</th>
+                            <th>📝 Remark</th>
+                            <th>✅ Decision</th>
+                            <th>🔁 Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ApplicantName</td>
+                                <td>@item.Email</td>
+                                <td>@item.Address</td>
+                                <td>@item.CompanyName</td>
+                                <td>
+                                    <span class="badge bg-@(item.Status == "Approved" ? "success" : item.Status == "Rejected" ? "danger" : "secondary")">
+                                        @item.Status
+                                    </span>
+                                </td>
+                                <td class="text-muted">@item.Remark</td>
+
+                                @using (Html.BeginForm("UpdateStatus", "Officer", FormMethod.Post))
+                                {
+                                    <td>
+                                        @Html.Hidden("applicationId", item.ApplicationId)
+                                        <select name="status" class="form-select form-select-sm">
+                                            <option value="Approved">✅ Approve</option>
+                                            <option value="Rejected">❌ Incomplete</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="submit" value="📤 Update" class="btn btn-outline-primary btn-sm" />
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>-->
+<!-- Bootstrap JS -->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +91,15 @@
         <!-- Header Section -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="text-primary fw-bold">📋 Loan Officer Dashboard</h2>
-            <a href="@Url.Action("LogOut", "Home")" class="btn btn-danger">🚪 Logout</a>
+
+            <div class="d-flex">
+                <a href="@Url.Action("ChangePassword", "Officer")" class="btn btn-danger ms-2">
+                    <span style="font-size: 20px; color: #FF6347;">🔑</span> Change Password
+                </a>
+                <a href="@Url.Action("LogOut", "Home")" class="btn btn-danger ms-2">
+                    🚪 Logout
+                </a>
+            </div>
         </div>
 
         <!-- Applicants Table -->
@@ -78,3 +160,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
