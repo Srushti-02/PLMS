@@ -42,21 +42,53 @@ namespace PLMS.Controllers
 
             return View();
         }
+        //[HttpPost]
+        //public ActionResult AddNew(AdminViewModel model)
+        //{
+        //    var officer = _db.USERs.FirstOrDefault(u => u.username == model.username);
+        //    if(officer != null)
+        //    {
+        //        ModelState.AddModelError("", "User already exists");
+        //        return View(model);
+        //    }
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new USER
+        //        {
+        //            username = model.username,
+        //            userpass = model.userpass,
+        //            fullName = model.fullName,
+        //            phoneNum = model.phoneNum,
+        //            role = model.role,
+        //            access = "Enabled",
+        //        };
+
+        //        _db.USERs.Add(user);
+        //        _db.SaveChanges();
+
+        //        return RedirectToAction("Admin", "Admin");
+        //    }
+        //    return View(model);
+        //}
         [HttpPost]
         public ActionResult AddNew(AdminViewModel model)
         {
-            var officer = _db.USERs.FirstOrDefault(u => u.username == model.username);
-            if(officer != null)
+            var existingUser = _db.USERs.FirstOrDefault(u => u.username == model.username);
+            if (existingUser != null)
             {
                 ModelState.AddModelError("", "User already exists");
                 return View(model);
             }
+
             if (ModelState.IsValid)
             {
+                // Generate random password
+                string generatedPassword = GenerateSecurePassword(10); // adjust length if needed
+
                 var user = new USER
                 {
                     username = model.username,
-                    userpass = model.userpass,
+                    userpass = generatedPassword, // Store auto-generated password
                     fullName = model.fullName,
                     phoneNum = model.phoneNum,
                     role = model.role,
@@ -66,10 +98,29 @@ namespace PLMS.Controllers
                 _db.USERs.Add(user);
                 _db.SaveChanges();
 
+                // Optionally: send password via email to the user
+                // SendTemporaryPassword(model.username, generatedPassword);
+
+                TempData["SuccessMessage"] = $"User added! Temporary password: {generatedPassword}";
                 return RedirectToAction("Admin", "Admin");
             }
+
             return View(model);
         }
+        private string GenerateSecurePassword(int length)
+        {
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
+            var res = new char[length];
+            var rnd = new Random();
+
+            for (int i = 0; i < length; i++)
+            {
+                res[i] = valid[rnd.Next(valid.Length)];
+            }
+
+            return new string(res);
+        }
+
 
         public ActionResult ViewApplications()
         {
