@@ -63,7 +63,7 @@
                                         <td>@application.FullName</td>
                                         <td>@application.Email</td>
                                         <td>@application.CompanyName</td>
-                                        <td>@String.Format("{0:C}", application.MonthlyIncome)</td>
+                                        <td>@String.Format(new System.Globalization.CultureInfo("en-IN"), "{0:C}", application.MonthlyIncome)</td>
                                         <td>
                                             <span class="badge rounded-pill bg-@GetStatusColor(application.Status)">
                                                 @application.Status

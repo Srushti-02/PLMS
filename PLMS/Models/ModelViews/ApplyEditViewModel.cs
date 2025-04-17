@@ -15,13 +15,13 @@ namespace PLMS.Models.ModelViews
         public string FullName { get; set; }
 
         public string Email { get; set; }
-        [Required]
+        [Required] 
         public string Address { get; set; }
         [Required]
         [RegularExpression(@"^\d{12}$", ErrorMessage = "Enter a valid 12-digit Adhar number")]
         public string AadhaarNumber { get; set; }
         [Required]
-        [RegularExpression(@"^\d{10}$", ErrorMessage = "Enter a valid 10-digit PAN number")]
+        [RegularExpression(@"^[A-Z]{5}[0-9]{4}[A-Z]{1}$", ErrorMessage = "Enter a valid 10-character PAN number (e.g., ABCDE1234F)")]
         public string PANNumber { get; set; }
         [Required]
         public DateTime DOB { get; set; }
