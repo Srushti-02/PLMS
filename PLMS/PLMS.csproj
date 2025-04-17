@@ -153,6 +153,7 @@
     <Compile Include="Models\ModelViews\AdminApplicationViewModel.cs" />
     <Compile Include="Models\ModelViews\AdminViewModel.cs" />
     <Compile Include="Models\ModelViews\ApplicantViewModel.cs" />
+    <Compile Include="Models\ModelViews\ApplyEditViewModel.cs" />
     <Compile Include="Models\ModelViews\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ModelViews\LoanInspectorViewModel.cs" />
     <Compile Include="Models\ModelViews\LOViewModel.cs" />

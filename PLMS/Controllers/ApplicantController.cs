@@ -34,11 +34,12 @@ namespace PLMS.Controllers
                     Session["username"] = user.username;
                     Session["userpass"] = user.password;
                     Session["name"] = user.fullName;
-
+                    TempData["SuccessMessage"] = "Successful Login";
                     return RedirectToAction("ApplicantDashboard", "Applicant");
                 }
 
-                return RedirectToAction("Index", "Home");
+                ViewBag.ErrorMessage = "Invalid username or password.";
+                return View(model);
             }
 
             ModelState.AddModelError("", "User doesn't exists");
@@ -97,7 +98,7 @@ namespace PLMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult Apply(ApplicantViewModel model)
+        public ActionResult Apply(ApplyEditViewModel model)
         {
             string username = Session["username"]?.ToString();
             if (string.IsNullOrEmpty(username))
@@ -136,9 +137,9 @@ namespace PLMS.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("ApplicantDashboard", "Applicant");
             }
+            ViewBag.ErrorMessage = "Something went wrong during applying to loan";
             return View(model);
         }
-
         // Edit profile
         public ActionResult Edit(int id)
         {
@@ -158,7 +159,7 @@ namespace PLMS.Controllers
                 return RedirectToAction("ApplicantDashboard");
             }
 
-            var viewModel = new ApplicantViewModel
+            var viewModel = new ApplyEditViewModel
             {
                 ApplicationId = application.applicationID,
                 Email = application.email,
@@ -176,7 +177,7 @@ namespace PLMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ApplicantViewModel model)
+        public ActionResult Edit(ApplyEditViewModel model)
         {
 
             if (!ModelState.IsValid)
@@ -226,39 +227,41 @@ namespace PLMS.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
- 
-            if (!ModelState.IsValid)
-                return View(model);
 
-            int userId = Convert.ToInt32(Session["userId"]);
-            var user = _db.Applicants.Find(userId);
-
-            if (user == null)
+            if (ModelState.IsValid)
             {
-                ModelState.AddModelError("", "User not found.");
-                return View(model);
+
+                int userId = Convert.ToInt32(Session["userId"]);
+                var user = _db.Applicants.Find(userId);
+
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "User not found.");
+                    return View(model);
+                }
+
+                if (model.CurrentPassword != user.password)
+                {
+                    ModelState.AddModelError("", "Current password is incorrect.");
+                    return View(model);
+                }
+
+                if (model.NewPassword != model.ConfirmPassword)
+                {
+                    ModelState.AddModelError("", "New password and confirmation do not match.");
+                    return View(model);
+                }
+
+                // Save new password (Note: You should hash passwords in production)
+                user.password = model.NewPassword;
+                _db.Entry(user).State = EntityState.Modified;
+                _db.SaveChanges();
+                TempData["SuccessMessage"] = "Password changed successfully!";
+                LogOut();
+                return RedirectToAction("Login", "Applicant");
             }
-
-            if (model.CurrentPassword != user.password)
-            {
-                ModelState.AddModelError("", "Current password is incorrect.");
-                return View(model);
-            }
-
-            if (model.NewPassword != model.ConfirmPassword)
-            {
-                ModelState.AddModelError("", "New password and confirmation do not match.");
-                return View(model);
-            }
-
-            // Save new password (Note: You should hash passwords in production)
-            user.password = model.NewPassword;
-            _db.Entry(user).State = EntityState.Modified;
-            _db.SaveChanges();
-
-            TempData["SuccessMessage"] = "Password changed successfully!";
-            LogOut();
-            return RedirectToAction("Login", "Applicant");
+            ViewBag.ErrorMessage = "Enter correct current password";
+            return View(model);
         }
 
 

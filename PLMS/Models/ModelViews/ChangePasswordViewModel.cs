@@ -9,6 +9,7 @@ namespace PLMS.Models.ModelViews
     public class ChangePasswordViewModel
     {
         [Required]
+        [StringLength(100, ErrorMessage = "Enter correct current password.")]
         [DataType(DataType.Password)]
         [Display(Name = "Current Password")]
         public string CurrentPassword { get; set; }

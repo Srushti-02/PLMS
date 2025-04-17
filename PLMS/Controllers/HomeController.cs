@@ -41,7 +41,8 @@ namespace PLMS.Controllers
 
                     Session["username"] = user.username;
                     Session["userID"] = user.userID;
-
+                    Session["name"] = user.fullName;
+                    Session["role"] = user.role;
                     if(user.role ==  "Admin") return RedirectToAction("Admin", "Admin");
                     else if(user.role == "LO") return RedirectToAction("Dashboard", "Officer");
                     else if(user.role == "LI") return RedirectToAction("Dashboard", "LoanInspector");

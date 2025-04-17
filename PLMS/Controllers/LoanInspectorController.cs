@@ -18,6 +18,11 @@ namespace PLMS.Controllers
                 // Redirect to login page if session is not set
                 filterContext.Result = RedirectToAction("Login", "Home");
             }
+            string userRole = Session["role"] as string;
+            if (Session["username"] != null && userRole != "LI")
+            {
+                filterContext.Result = RedirectToAction("Login", "Home");
+            }
 
             base.OnActionExecuting(filterContext);
         }

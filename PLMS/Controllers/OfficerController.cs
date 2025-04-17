@@ -18,7 +18,11 @@ namespace PLMS.Controllers
                 // Redirect to login page if session is not set
                 filterContext.Result = RedirectToAction("Login", "Home");
             }
-
+            string userRole = Session["role"] as string;
+            if (Session["username"] != null && userRole != "LO")
+            {
+                filterContext.Result = RedirectToAction("Login", "Home");
+            }
             base.OnActionExecuting(filterContext);
         }
         public ActionResult Dashboard()
@@ -79,7 +83,8 @@ namespace PLMS.Controllers
                     loanStatus.remark = "Incomplete Application Stated by Loan Officer";
                 }
 
-                _db.SaveChanges();
+
+                    _db.SaveChanges();
             }
 
             return RedirectToAction("Dashboard");

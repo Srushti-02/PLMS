@@ -12,19 +12,18 @@ namespace PLMS.Models.ModelViews
         public int userId { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(50, ErrorMessage = "User already exists")]
         public string username { get; set; }
 
+        public string userpass { get; set; }
         [Required]
         [StringLength(100)]
-        public string userpass { get; set; }
-
-        [StringLength(100)]
         public string fullName { get; set; }
-
+        [Required]
         [StringLength(15)]
         public string phoneNum { get; set; }
 
+        [Required]
         [StringLength(20)]
         public string role { get; set; }
 

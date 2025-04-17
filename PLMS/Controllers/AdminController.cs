@@ -26,6 +26,12 @@ namespace PLMS.Controllers
                 filterContext.Result = RedirectToAction("Login", "Home");
             }
 
+            string userRole = Session["role"] as string;
+            if (Session["username"]!=null && userRole != "Admin")
+            {
+                filterContext.Result = RedirectToAction("Login", "Home");
+            }
+
             base.OnActionExecuting(filterContext);
         }
 
@@ -76,19 +82,20 @@ namespace PLMS.Controllers
             var existingUser = _db.USERs.FirstOrDefault(u => u.username == model.username);
             if (existingUser != null)
             {
-                ModelState.AddModelError("", "User already exists");
+                ViewBag.ErrorMessage = "User already exists";
                 return View(model);
             }
 
             if (ModelState.IsValid)
             {
                 // Generate random password
-                string generatedPassword = GenerateSecurePassword(10); // adjust length if needed
+                //string generatedPassword = GenerateSecurePassword(10); // adjust length if needed
 
                 var user = new USER
                 {
                     username = model.username,
-                    userpass = generatedPassword, // Store auto-generated password
+                    //userpass = generatedPassword, // Store auto-generated password
+                    userpass = "123",
                     fullName = model.fullName,
                     phoneNum = model.phoneNum,
                     role = model.role,
@@ -98,28 +105,26 @@ namespace PLMS.Controllers
                 _db.USERs.Add(user);
                 _db.SaveChanges();
 
-                // Optionally: send password via email to the user
-                // SendTemporaryPassword(model.username, generatedPassword);
-
-                TempData["SuccessMessage"] = $"User added! Temporary password: {generatedPassword}";
+                //TempData["SuccessMessage"] = $"User added! Temporary password: {generatedPassword}";
+                TempData["SuccessMessage"] = $"User Added! Temporary password: {user.userpass}";
                 return RedirectToAction("Admin", "Admin");
             }
-
+            
             return View(model);
         }
-        private string GenerateSecurePassword(int length)
-        {
-            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
-            var res = new char[length];
-            var rnd = new Random();
+        //private string GenerateSecurePassword(int length)
+        //{
+        //    const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*";
+        //    var res = new char[length];
+        //    var rnd = new Random();
 
-            for (int i = 0; i < length; i++)
-            {
-                res[i] = valid[rnd.Next(valid.Length)];
-            }
+        //    for (int i = 0; i < length; i++)
+        //    {
+        //        res[i] = valid[rnd.Next(valid.Length)];
+        //    }
 
-            return new string(res);
-        }
+        //    return new string(res);
+        //}
 
 
         public ActionResult ViewApplications()

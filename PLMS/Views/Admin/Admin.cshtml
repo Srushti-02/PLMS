@@ -19,15 +19,12 @@
         <!-- Top Header -->
         <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
             <div>
-                <h2 class="fw-bold">👋 Welcome, Admin</h2>
+                <h2 class="fw-bold">👋 Welcome, @Session["name"]</h2>
                 <p class="text-muted mb-0">🎯 Admin Dashboard – Manage users, roles, and applications efficiently.</p>
             </div>
             
             <div class="ms-auto">
-                <!-- Change Password Button -->
-                <a href="@Url.Action("ChangePassword", "Home")" class="btn btn-danger btn-sm">
-                    <span style="font-size: 20px; color: #FF6347;">🔑</span> Change Password
-                </a>
+                
                 @Html.ActionLink("🚪 Logout", "LogOut", "Home", null, new { @class = "btn btn-danger" })
             </div>
         </div>
