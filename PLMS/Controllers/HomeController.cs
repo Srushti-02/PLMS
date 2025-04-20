@@ -18,7 +18,7 @@ namespace PLMS.Controllers
         {
             return View();
         }
-
+        
         public ActionResult Login()
         {
             return View();
@@ -26,6 +26,7 @@ namespace PLMS.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public ActionResult Login(LoginModelView model)
         {
             if (ModelState.IsValid)

@@ -13,6 +13,34 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center mx-3">
+                <!-- Back Button -->
+                <a href="javascript:void(0)" onclick="goBack()" class="btn btn-outline-light me-4">
+                    <i class="fas fa-arrow-left me-1"></i> Back
+                </a>
+            </div>
+
+            <!-- Brand - Centered -->
+            <div class="mx-auto">
+                <a class="navbar-brand">
+                    <i class="fas fa-shield-halved text-white me-2" style="font-size: 1.2rem;"></i>BorrowEase
+                </a>
+            </div>
+
+            <!-- Right Side Nav -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="btn ms-3 text-white" style="background-color: black; border: 1px solid white;" href="@Url.Action("LogOut", "Home")">
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     <!-- Page Container with border -->
     <div class="container mt-4 border rounded p-4 shadow-sm" style="border: 2px solid #dee2e6; background-color: #fefefe;">
 
@@ -21,11 +49,6 @@
             <div>
                 <h2 class="fw-bold">👋 Welcome, @Session["name"]</h2>
                 <p class="text-muted mb-0">🎯 Admin Dashboard – Manage users, roles, and applications efficiently.</p>
-            </div>
-            
-            <div class="ms-auto">
-                
-                @Html.ActionLink("🚪 Logout", "LogOut", "Home", null, new { @class = "btn btn-danger" })
             </div>
         </div>
 
@@ -93,5 +116,14 @@
     }
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function goBack() {
+            if (document.referrer) {
+                window.history.back();
+            } else {
+                window.location.href = "/";
+            }
+        }
+    </script>
 </body>
 </html>

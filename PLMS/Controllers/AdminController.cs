@@ -13,6 +13,7 @@ using System.Data.Entity.Migrations.Infrastructure;
 
 namespace PLMS.Controllers
 {
+    
     public class AdminController : Controller
     {
         G1IBMDbEntities _db = new G1IBMDbEntities();
@@ -34,7 +35,7 @@ namespace PLMS.Controllers
 
             base.OnActionExecuting(filterContext);
         }
-
+        
         public ActionResult Admin()
         {
 
@@ -77,6 +78,7 @@ namespace PLMS.Controllers
         //    return View(model);
         //}
         [HttpPost]
+
         public ActionResult AddNew(AdminViewModel model)
         {
             var existingUser = _db.USERs.FirstOrDefault(u => u.username == model.username);
@@ -107,7 +109,7 @@ namespace PLMS.Controllers
 
                 //TempData["SuccessMessage"] = $"User added! Temporary password: {generatedPassword}";
                 TempData["SuccessMessage"] = $"User Added! Temporary password: {user.userpass}";
-                return RedirectToAction("Admin", "Admin");
+                return View(model);
             }
             
             return View(model);
@@ -144,19 +146,25 @@ namespace PLMS.Controllers
                 {
                     var status = app.LoanStatu?.loanStatus ?? "Pending";
                     var officerRoles = app.Officers.Select(o => o.USER.role).ToList();
-
-                    bool noOfficerAssigned = !app.Officers.Any();
-                    bool isPending = status == "Pending";
-
+                    var remark = app.LoanStatu?.remark ?? "Application submitted and edited";
                     bool hasLO = officerRoles.Contains("LO");
-                    bool noLI = !officerRoles.Contains("LI");
-                    bool approvedOrRejectedByLO = (status == "Approved");
+                    bool hasLI = officerRoles.Contains("LI");
+                    bool isPending = status == "Pending";
+                    bool isApproved = status == "Approved";
+                    bool isRemark = remark == "Application submitted and edited";
 
-                    return
-                        (noOfficerAssigned && isPending) ||
-                        (hasLO && noLI && approvedOrRejectedByLO);
+                    // CASE 1: New application (Pending + no LO assigned)
+                    bool showForLO = isPending && !hasLO;
+                    
+                    // CASE 2: Approved by LO, waiting for LI
+                    bool showForLI = isApproved && hasLO && !hasLI;
+
+                    return showForLO || showForLI;
                 })
                 .ToList();
+
+
+
 
             var viewModel = filteredApplications.Select(app =>
             {

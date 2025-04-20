@@ -5,14 +5,43 @@
 }
 
 @Html.AntiForgeryToken()
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="d-flex align-items-center mx-3">
+            <!-- Back Button -->
+            <a href="javascript:void(0)" onclick="goBack()" class="btn btn-outline-light me-4">
+                <i class="fas fa-arrow-left me-1"></i> Back
+            </a>
+        </div>
+
+        <!-- Brand - Centered -->
+        <div class="mx-auto">
+            <a class="navbar-brand">
+                <i class="fas fa-shield-halved text-white me-2" style="font-size: 1.2rem;"></i>BorrowEase
+            </a>
+        </div>
+
+        <!-- Right Side Nav -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="@Url.Action("ChangePassword", "Home")" class="btn ms-2 text-white" style="background-color: black; border: 1px solid white;">
+                        <span style="font-size: 20px; color: #FF6347;">🔑</span> Change Password
+                    </a>
+                    <a class="btn ms-3 text-white" style="background-color: black; border: 1px solid white;" href="@Url.Action("LogOut", "Home")">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="container mt-4">
     <div class="d-flex justify-content-between mb-3">
         <h2 class="text-primary">👮 Loan Inspector Dashboard</h2>
-        <div>
-            <span class="me-3 text-success">👋 Welcome, <b>@ViewBag.Username</b></span>
-            <a href="@Url.Action("ChangePassword", "Home")" class="btn btn-warning btn-sm">🔐 Change Password</a>
-            <a href="@Url.Action("LogOut", "Home")" class="btn btn-danger btn-sm">🚪 Logout</a>
-        </div>
+        
     </div>
 
     <table class="table table-bordered table-striped text-center">
@@ -110,4 +139,13 @@
         });
     }
 
+</script>
+<script>
+    function goBack() {
+        if (document.referrer) {
+            window.history.back();
+        } else {
+            window.location.href = "/";
+        }
+    }
 </script>
