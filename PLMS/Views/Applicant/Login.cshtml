@@ -90,13 +90,14 @@
     <script>
         function goBack() {
             if (document.referrer) {
-                window.history.back();
+                window.location.href = "/Home/Index";
             } else {
                 window.location.href = "/";
             }
         }
     </script>
-    @*<script>
+
+    <script>
         // Prevent going back to previous page after logout
         if (window.history && window.history.pushState) {
             window.history.pushState(null, "", window.location.href);
@@ -104,6 +105,6 @@
                 window.history.pushState(null, "", window.location.href);
             };
         }
-    </script>*@
+    </script>
 </body>
 </html>

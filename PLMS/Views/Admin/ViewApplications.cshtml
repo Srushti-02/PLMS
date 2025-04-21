@@ -44,50 +44,59 @@
             <p class="text-muted">Assign officers to handle each applicant’s case</p>
         </div>
     </div>
-
-    <!-- Officer Assignment Table -->
-    <div class="container mb-5">
-        @using (Html.BeginForm("AssignOfficer", "Admin", FormMethod.Post))
-        {
-            <div class="card shadow border-0">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover align-middle">
-                            <thead class="table-light text-center">
-                                <tr>
-                                    <th>🙍 Applicant</th>
-                                    <th>📌 Status</th>
-                                    <th>🗒️ Remark</th>
-                                    <th>👮 Officer Assigned</th>
-                                    <th>🔁 Assign New Officer</th>
-                                    <th>✅ Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center">
-                                @foreach (var app in Model)
-                                {
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle me-2"></i><strong>No applications found.</strong>
+        </div>
+    }
+    else
+    {
+        <!-- Officer Assignment Table -->
+        <div class="container mb-5">
+            @using (Html.BeginForm("AssignOfficer", "Admin", FormMethod.Post))
+            {
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle">
+                                <thead class="table-light text-center">
                                     <tr>
-                                        <td>@app.ApplicantName</td>
-                                        <td>@app.Status</td>
-                                        <td>@app.Remark</td>
-                                        <td>@app.AssignedOfficerName</td>
-                                        <td>
-                                            @Html.DropDownList("officerId_" + app.ApplicationId, app.OfficersList, "-- Select Officer --", new { @class = "form-select form-select-sm" })
-                                        </td>
-                                        <td>
-                                            <button type="submit" name="applicationId" value="@app.ApplicationId" class="btn btn-outline-primary btn-sm">
-                                                Assign
-                                            </button>
-                                        </td>
+                                        <th>🙍 Applicant</th>
+                                        <th>📌 Status</th>
+                                        <th>🗒️ Remark</th>
+                                        <th>👮 Officer Assigned</th>
+                                        <th>🔁 Assign New Officer</th>
+                                        <th>✅ Action</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="text-center">
+                                    @foreach (var app in Model)
+                                    {
+                                        <tr>
+                                            <td>@app.ApplicantName</td>
+                                            <td>@app.Status</td>
+                                            <td>@app.Remark</td>
+                                            <td>@app.AssignedOfficerName</td>
+                                            <td>
+                                                @Html.DropDownList("officerId_" + app.ApplicationId, app.OfficersList, "-- Select Officer --", new { @class = "form-select form-select-sm" })
+                                            </td>
+                                            <td>
+                                                <button type="submit" name="applicationId" value="@app.ApplicationId" class="btn btn-outline-primary btn-sm">
+                                                    Assign
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>

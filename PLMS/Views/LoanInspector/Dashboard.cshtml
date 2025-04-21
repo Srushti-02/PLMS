@@ -41,55 +41,65 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between mb-3">
         <h2 class="text-primary">👮 Loan Inspector Dashboard</h2>
-        
-    </div>
 
-    <table class="table table-bordered table-striped text-center">
-        <thead class="table-dark">
-            <tr>
-                <th>Applicant Name</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Company</th>
-                <th>Status</th>
-                <th>Remark</th>
-                <th>View History</th>
-                <th>Update Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    </div>
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle me-2"></i><strong>No applications found.</strong>
+        </div>
+    }
+    else {
+        <table class="table table-bordered table-striped text-center">
+            <thead class="table-dark">
                 <tr>
-                    <td>@item.ApplicantName</td>
-                    <td>@item.Email</td>
-                    <td>@item.Address</td>
-                    <td>@item.CompanyName</td>
-                    <td>
-                        <span class="badge bg-@(item.Status == "Approved" ? "success" : item.Status == "Rejected" ? "danger" : "secondary")">@item.Status</span>
-                    </td>
-                    <td>@item.Remark</td>
-                    <td>
-                        <button class="btn btn-info btn-sm" onclick="viewHistory(@item.applicantId)">📜 History</button>
-                    </td>
-                    @using (Html.BeginForm("UpdateStatus", "LoanInspector", FormMethod.Post))
-                    {
-                        <td>
-                            @Html.Hidden("applicationId", item.ApplicationId)
-                            <select name="status" class="form-select form-select-sm">
-                                <option value="Approved">✅ Approve</option>
-                                <option value="Rejected">❌ Reject</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="submit" value="📤 Update" class="btn btn-outline-primary btn-sm" />
-                        </td>
-                    }
+                    <th>Applicant Name</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Company</th>
+                    <th>Status</th>
+                    <th>Remark</th>
+                    <th>View History</th>
+                    <th>Update Status</th>
+                    <th>Action</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ApplicantName</td>
+                        <td>@item.Email</td>
+                        <td>@item.Address</td>
+                        <td>@item.CompanyName</td>
+                        <td>
+                            <span class="badge bg-@(item.Status == "Approved" ? "success" : item.Status == "Rejected" ? "danger" : "secondary")">@item.Status</span>
+                        </td>
+                        <td>@item.Remark</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" onclick="viewHistory(@item.applicantId)">📜 History</button>
+                        </td>
+                        @using (Html.BeginForm("UpdateStatus", "LoanInspector", FormMethod.Post))
+                        {
+                            <td>
+                                @Html.Hidden("applicationId", item.ApplicationId)
+                                <select name="status" class="form-select form-select-sm">
+                                    <option value="Approved">✅ Approve</option>
+                                    <option value="Rejected">❌ Reject</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="submit" value="📤 Update" class="btn btn-outline-primary btn-sm" />
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+
+    
 </div>
 
 <!-- Modal -->
