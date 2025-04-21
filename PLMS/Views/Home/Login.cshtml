@@ -88,14 +88,15 @@
             if (document.referrer) {
                 window.history.back();
             } else {
-                window.location.href = "/";
+                window.location.href = "/Home/Index";
             }
         }
     </script>
+
     <script>
         history.pushState(null, "", location.href);
         window.onpopstate = function () {
-            history.pushState(null, "", location.href);
+            history.pushState(1);
         };
     </script>
 

@@ -33,9 +33,18 @@ namespace PLMS.Controllers
                 filterContext.Result = RedirectToAction("Login", "Home");
             }
 
+            var response = filterContext.HttpContext.Response;
+            response.Cache.SetExpires(DateTime.UtcNow.AddDays(-1));
+            response.Cache.SetValidUntilExpires(false);
+            response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+            response.Cache.SetCacheability(HttpCacheability.NoCache);
+            response.Cache.SetNoStore();
+
             base.OnActionExecuting(filterContext);
         }
+
         
+
         public ActionResult Admin()
         {
 
@@ -249,5 +258,7 @@ namespace PLMS.Controllers
 
             return RedirectToAction("EditAccess", "Admin");
         }
+
+
     }
 }

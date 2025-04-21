@@ -23,6 +23,13 @@ namespace PLMS.Controllers
             {
                 filterContext.Result = RedirectToAction("Login", "Home");
             }
+
+            var response = filterContext.HttpContext.Response;
+            response.Cache.SetExpires(DateTime.UtcNow.AddDays(-1));
+            response.Cache.SetValidUntilExpires(false);
+            response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+            response.Cache.SetCacheability(HttpCacheability.NoCache);
+            response.Cache.SetNoStore();
             base.OnActionExecuting(filterContext);
         }
         public ActionResult Dashboard()
@@ -50,7 +57,7 @@ namespace PLMS.Controllers
                 .Select(o => new LOViewModel
                 {
                     ApplicationId = o.applicationID,
-                    ApplicantName = o.LoanApplication.Applicant.username,
+                    ApplicantName = o.LoanApplication.Applicant.fullName,
                     Email = o.LoanApplication.email,
                     Address = o.LoanApplication.address,
                     CompanyName = o.LoanApplication.companyName,

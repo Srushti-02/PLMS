@@ -15,7 +15,18 @@ namespace PLMS.Controllers
     {
         G1IBMDbEntities _db = new G1IBMDbEntities();
         // GET: Applicant
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        { 
 
+            var response = filterContext.HttpContext.Response;
+            response.Cache.SetExpires(DateTime.UtcNow.AddDays(-1));
+            response.Cache.SetValidUntilExpires(false);
+            response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+            response.Cache.SetCacheability(HttpCacheability.NoCache);
+            response.Cache.SetNoStore();
+
+            base.OnActionExecuting(filterContext);
+        }
         public ActionResult Login()
         {
             return View();
@@ -105,10 +116,13 @@ namespace PLMS.Controllers
             {
                 return RedirectToAction("Login", "Applicant");
             }
-            var registrationId = _db.Applicants.FirstOrDefault(u => u.username == model.Email).registrationID;
+            if (username != model.Email)
+            {
+                ModelState.AddModelError("", "Enter correct Email");
+            }
             if (ModelState.IsValid)
             {
-
+                var registrationId = _db.Applicants.FirstOrDefault(u => u.username == model.Email).registrationID;
                 LoanApplication application = new LoanApplication
                 {
 
